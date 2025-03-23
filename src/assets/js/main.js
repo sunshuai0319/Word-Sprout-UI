@@ -89,6 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+
+  setupWordImages();
 });
 
 // 获取当前页面名称
@@ -864,4 +866,42 @@ function initDifficultySelection() {
 window.addEventListener('resize', hideScrollbars);
 
 // 页面完全加载后再次确保滚动条隐藏（捕获懒加载内容）
-window.addEventListener('load', hideScrollbars); 
+window.addEventListener('load', hideScrollbars);
+
+// 单词图片处理 - 学习页面功能
+function setupWordImages() {
+  const wordImages = document.querySelectorAll('.word-image img');
+  if (wordImages.length > 0) {
+    wordImages.forEach(img => {
+      img.addEventListener('click', function() {
+        // 创建模态框显示大图
+        const modal = document.createElement('div');
+        modal.classList.add('image-modal');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.style.zIndex = '9999';
+        
+        const modalImg = document.createElement('img');
+        modalImg.src = this.src;
+        modalImg.style.maxWidth = '90%';
+        modalImg.style.maxHeight = '90%';
+        modalImg.style.borderRadius = '8px';
+        
+        modal.appendChild(modalImg);
+        document.body.appendChild(modal);
+        
+        // 点击模态框关闭
+        modal.addEventListener('click', function() {
+          document.body.removeChild(modal);
+        });
+      });
+    });
+  }
+} 
