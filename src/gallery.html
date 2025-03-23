@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordSprout - 单词萌芽 | 页面画廊</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background-color: #f5f5f5;
+    }
+    .gallery-item {
+      transition: all 0.3s ease;
+      height: 850px;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .iframe-container {
+      height: 100%;
+      overflow: hidden;
+      width: 375px;
+      margin: 0 auto;
+      padding-top: 20px;
+    }
+    .gallery-iframe {
+      border: none;
+      transform: scale(0.85);
+      transform-origin: 0 0;
+      width: 375px;
+      height: 800px;
+      border: 1px solid #e0e0e0;
+      border-radius: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .page-title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border-top: 1px solid #e0e0e0;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="p-6">
+  <header class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-green-600 mb-2">WordSprout - 单词萌芽</h1>
+    <p class="text-gray-600">所有页面预览</p>
+  </header>
+
+  <div class="flex justify-end mb-4">
+    <a href="preview.html" class="bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-md text-sm flex items-center">
+      <i class="fas fa-arrow-left mr-2"></i>
+      <span>返回预览模式</span>
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- 首页 -->
+    <div class="gallery-item bg-white rounded-lg shadow-md">
+      <div class="block h-full">
+        <div class="iframe-container">
+          <iframe src="pages/index.html" class="gallery-iframe"></iframe>
+        </div>
+        <div class="page-title">
+          <h3 class="text-lg font-semibold text-green-600">首页</h3>
+          <p class="text-sm text-gray-500">应用主入口</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 单词学习 -->
+    <div class="gallery-item bg-white rounded-lg shadow-md">
+      <div class="block h-full">
+        <div class="iframe-container">
+          <iframe src="pages/learning.html" class="gallery-iframe"></iframe>
+        </div>
+        <div class="page-title">
+          <h3 class="text-lg font-semibold text-green-600">单词学习</h3>
+          <p class="text-sm text-gray-500">核心学习功能</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 难度选择 -->
+    <div class="gallery-item bg-white rounded-lg shadow-md">
+      <div class="block h-full">
+        <div class="iframe-container">
+          <iframe src="pages/level.html" class="gallery-iframe"></iframe>
+        </div>
+        <div class="page-title">
+          <h3 class="text-lg font-semibold text-green-600">难度选择</h3>
+          <p class="text-sm text-gray-500">选择适合的学习难度</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 语音训练 -->
+    <div class="gallery-item bg-white rounded-lg shadow-md">
+      <div class="block h-full">
+        <div class="iframe-container">
+          <iframe src="pages/speech.html" class="gallery-iframe"></iframe>
+        </div>
+        <div class="page-title">
+          <h3 class="text-lg font-semibold text-green-600">语音训练</h3>
+          <p class="text-sm text-gray-500">提升语音表达能力</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 游戏中心 -->
+    <div class="gallery-item bg-white rounded-lg shadow-md">
+      <div class="block h-full">
+        <div class="iframe-container">
+          <iframe src="pages/games.html" class="gallery-iframe"></iframe>
+        </div>
+        <div class="page-title">
+          <h3 class="text-lg font-semibold text-green-600">游戏中心</h3>
+          <p class="text-sm text-gray-500">趣味游戏学习</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 学习报告 -->
+    <div class="gallery-item bg-white rounded-lg shadow-md">
+      <div class="block h-full">
+        <div class="iframe-container">
+          <iframe src="pages/report.html" class="gallery-iframe"></iframe>
+        </div>
+        <div class="page-title">
+          <h3 class="text-lg font-semibold text-green-600">学习报告</h3>
+          <p class="text-sm text-gray-500">学习数据可视化</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 个人中心 -->
+    <div class="gallery-item bg-white rounded-lg shadow-md">
+      <div class="block h-full">
+        <div class="iframe-container">
+          <iframe src="pages/profile.html" class="gallery-iframe"></iframe>
+        </div>
+        <div class="page-title">
+          <h3 class="text-lg font-semibold text-green-600">个人中心</h3>
+          <p class="text-sm text-gray-500">用户信息管理</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 设置 -->
+    <div class="gallery-item bg-white rounded-lg shadow-md">
+      <div class="block h-full">
+        <div class="iframe-container">
+          <iframe src="pages/settings.html" class="gallery-iframe"></iframe>
+        </div>
+        <div class="page-title">
+          <h3 class="text-lg font-semibold text-green-600">设置</h3>
+          <p class="text-sm text-gray-500">应用设置管理</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 错题本 -->
+    <div class="gallery-item bg-white rounded-lg shadow-md">
+      <div class="block h-full">
+        <div class="iframe-container">
+          <iframe src="pages/wrong-words.html" class="gallery-iframe"></iframe>
+        </div>
+        <div class="page-title">
+          <h3 class="text-lg font-semibold text-green-600">错题本</h3>
+          <p class="text-sm text-gray-500">错误单词记录</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="mt-12 text-center text-gray-500 text-sm">
+    <p>WordSprout - 单词萌芽 © 2023 | 专为儿童英语学习设计</p>
+  </footer>
+</body>
+</html> 

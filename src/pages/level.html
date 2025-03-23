@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>难度选择 - WordSprout</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+  <div class="wx-container">
+    <!-- 添加iPhone状态栏 -->
+    <div class="iphone-status-bar">
+      <div class="status-carrier">中国移动</div>
+      <div class="status-time">14:25</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <div class="battery-icon">
+          <div class="battery-level"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="wx-page fade-in">
+      <!-- 顶部标题栏 -->
+      <div class="wx-header flex items-center justify-between p-3 bg-white shadow-sm rounded-b-2xl mb-2 relative overflow-hidden">
+        <!-- 添加背景装饰 -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-teal-400"></div>
+        
+        <div class="flex items-center">
+          <button class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-2 hover:bg-gray-100 transition duration-200" onclick="window.history.back()">
+            <i class="fas fa-arrow-left text-gray-500"></i>
+          </button>
+          <h1 class="text-xl font-bold text-green-600">难度选择</h1>
+        </div>
+        <div>
+          <!-- 右侧为空 -->
+        </div>
+      </div>
+
+      <!-- CEFR标准说明 -->
+      <div class="wx-card mb-6">
+        <h3 class="font-medium mb-2">CEFR语言标准</h3>
+        <p class="text-sm text-gray-600">
+          欧洲语言共同参考框架(CEFR)将语言能力分为六个等级：A1(入门)至C2(精通)。选择适合您孩子的级别开始学习。
+        </p>
+      </div>
+
+      <!-- A级别 -->
+      <h3 class="font-medium mb-3 mt-6">基础级 (Beginner)</h3>
+      
+      <!-- A1级别 -->
+      <div class="wx-card mb-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="flex items-center">
+              <div class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                A1
+              </div>
+              <h4 class="font-medium">入门级</h4>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">
+              学习50个基础单词，适合3-5岁儿童起步
+            </p>
+          </div>
+          <div>
+            <i class="fas fa-check-circle text-2xl text-green-500"></i>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span>学习进度</span>
+            <span>25/50</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 50%;"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- A2级别 -->
+      <div class="wx-card mb-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="flex items-center">
+              <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                A2
+              </div>
+              <h4 class="font-medium">基础级</h4>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">
+              学习100个日常单词，掌握简单的句型
+            </p>
+          </div>
+          <div>
+            <i class="fas fa-lock text-2xl text-gray-300"></i>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span>解锁条件</span>
+            <span>完成A1 80%</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 50%; background-color: #ccc;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B级别 -->
+      <h3 class="font-medium mb-3 mt-6">中级 (Intermediate)</h3>
+      
+      <!-- B1级别 -->
+      <div class="wx-card mb-4 opacity-70">
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="flex items-center">
+              <div class="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                B1
+              </div>
+              <h4 class="font-medium">中级入门</h4>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">
+              学习200个主题单词，包含学校和家庭相关词汇
+            </p>
+          </div>
+          <div>
+            <i class="fas fa-lock text-2xl text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- B2级别 -->
+      <div class="wx-card mb-4 opacity-60">
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="flex items-center">
+              <div class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                B2
+              </div>
+              <h4 class="font-medium">中级进阶</h4>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">
+              学习300个进阶单词，能够进行简单的对话
+            </p>
+          </div>
+          <div>
+            <i class="fas fa-lock text-2xl text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- C级别 -->
+      <h3 class="font-medium mb-3 mt-6">高级 (Advanced)</h3>
+      
+      <!-- C1级别 -->
+      <div class="wx-card mb-4 opacity-50">
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="flex items-center">
+              <div class="bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                C1
+              </div>
+              <h4 class="font-medium">高级入门</h4>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">
+              学习500个高频词汇，能够理解简单的原版故事
+            </p>
+          </div>
+          <div>
+            <i class="fas fa-lock text-2xl text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- C2级别 -->
+      <div class="wx-card mb-4 opacity-40">
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="flex items-center">
+              <div class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                C2
+              </div>
+              <h4 class="font-medium">精通级</h4>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">
+              学习1000个高级词汇，接近母语者水平
+            </p>
+          </div>
+          <div>
+            <i class="fas fa-lock text-2xl text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-1">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-home text-xl"></i>
+          <span class="text-xs mt-1">首页</span>
+        </a>
+        <a href="learning.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-book text-xl"></i>
+          <span class="text-xs mt-1">学习</span>
+        </a>
+        <a href="speech.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-microphone text-xl"></i>
+          <span class="text-xs mt-1">语音</span>
+        </a>
+        <a href="games.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-gamepad text-xl"></i>
+          <span class="text-xs mt-1">游戏</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-user text-xl"></i>
+          <span class="text-xs mt-1">我的</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // 更新状态栏时间
+    function updateStatusTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      document.querySelector('.status-time').textContent = `${hours}:${minutes}`;
+    }
+    
+    // 初始更新时间并设置定时器每分钟更新一次
+    updateStatusTime();
+    setInterval(updateStatusTime, 60000);
+  </script>
+</body>
+</html> 

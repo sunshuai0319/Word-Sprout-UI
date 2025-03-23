@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordSprout - 单词萌芽 | 移动设备预览</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      margin: 0;
+    }
+    .page-header {
+      width: 100%;
+      max-width: 1200px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .preview-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: white;
+    }
+    .page-item {
+      transition: all 0.2s;
+    }
+    .page-item:hover {
+      background-color: #f0f9f0;
+    }
+    .page-item.active {
+      background-color: #e6f7e6;
+      border-left: 4px solid #4CAF50;
+    }
+    .mobile-container {
+      width: 375px;
+      height: 812px;
+      margin: 0 auto;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border: 12px solid #333;
+      position: relative;
+    }
+    .mobile-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 30px;
+      background-color: #333;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      z-index: 10;
+    }
+    .page-selector {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    .page-button {
+      background-color: white;
+      color: #333;
+      border: 1px solid #ddd;
+      padding: 6px 12px;
+      margin: 5px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+    }
+    .page-button:hover {
+      background-color: #f0f9f0;
+      border-color: #4CAF50;
+    }
+    .page-button.active {
+      background-color: #e6f7e6;
+      border-color: #4CAF50;
+      color: #4CAF50;
+    }
+    .page-button i {
+      margin-right: 6px;
+    }
+    .additional-links {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <h1 class="text-2xl font-bold text-green-600 mb-2">WordSprout - 单词萌芽</h1>
+    <p class="text-gray-600">移动设备预览模式</p>
+  </div>
+
+  <div class="page-selector">
+    <button class="page-button active" data-page="pages/index.html">
+      <i class="fas fa-home"></i>首页
+    </button>
+    <button class="page-button" data-page="pages/learning.html">
+      <i class="fas fa-book"></i>单词学习
+    </button>
+    <button class="page-button" data-page="pages/level.html">
+      <i class="fas fa-signal"></i>难度选择
+    </button>
+    <button class="page-button" data-page="pages/speech.html">
+      <i class="fas fa-microphone"></i>语音训练
+    </button>
+    <button class="page-button" data-page="pages/games.html">
+      <i class="fas fa-gamepad"></i>游戏中心
+    </button>
+    <button class="page-button" data-page="pages/report.html">
+      <i class="fas fa-chart-bar"></i>学习报告
+    </button>
+    <button class="page-button" data-page="pages/profile.html">
+      <i class="fas fa-user"></i>个人中心
+    </button>
+    <button class="page-button" data-page="pages/settings.html">
+      <i class="fas fa-cog"></i>设置
+    </button>
+    <button class="page-button" data-page="pages/wrong-words.html">
+      <i class="fas fa-exclamation-circle"></i>错题本
+    </button>
+  </div>
+
+  <div class="mobile-container">
+    <div class="mobile-notch"></div>
+    <iframe id="mobile-frame" src="pages/index.html" class="preview-frame"></iframe>
+  </div>
+
+  <div class="additional-links">
+    <a href="gallery.html" class="bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-md text-sm inline-flex items-center" target="_blank">
+      <i class="fas fa-th mr-2"></i>
+      <span>打开网格视图</span>
+    </a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const pageButtons = document.querySelectorAll('.page-button');
+      const mobileFrame = document.getElementById('mobile-frame');
+
+      // 页面切换
+      pageButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          pageButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          const page = this.getAttribute('data-page');
+          mobileFrame.src = page;
+        });
+      });
+    });
+  </script>
+</body>
+</html> 

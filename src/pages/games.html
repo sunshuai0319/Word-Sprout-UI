@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>游戏中心 - WordSprout</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+  <div class="wx-container">
+    <!-- 添加iPhone状态栏 -->
+    <div class="iphone-status-bar">
+      <div class="status-carrier">中国移动</div>
+      <div class="status-time">14:25</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <div class="battery-icon">
+          <div class="battery-level"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="wx-page fade-in">
+      <!-- 顶部标题栏 -->
+      <div class="wx-header flex items-center justify-between p-3 bg-white shadow-sm rounded-b-2xl mb-2 relative overflow-hidden">
+        <!-- 添加背景装饰 -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 to-red-400"></div>
+        
+        <div class="flex items-center">
+          <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-yellow-500">游戏中心</h1>
+        </div>
+        <div class="flex items-center">
+          <div class="flex bg-yellow-50 px-3 py-1 rounded-full items-center mr-2 shadow-sm">
+            <i class="fas fa-star text-yellow-500 mr-1 text-xs"></i>
+            <span class="text-xs text-yellow-700 font-medium">320</span>
+          </div>
+          <button class="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center hover:bg-yellow-100 transition duration-200">
+            <i class="fas fa-trophy text-yellow-500"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 游戏分类选项卡 -->
+      <div class="flex border-b mb-6">
+        <button class="px-4 py-2 border-b-2 border-green-500 text-green-600 font-medium">
+          全部
+        </button>
+        <button class="px-4 py-2 text-gray-500">
+          配对
+        </button>
+        <button class="px-4 py-2 text-gray-500">
+          听力
+        </button>
+        <button class="px-4 py-2 text-gray-500">
+          拼写
+        </button>
+      </div>
+      
+      <!-- 游戏卡片 -->
+      <div class="grid grid-cols-2 gap-4">
+        <!-- 单词配对游戏 -->
+        <a href="game-matching.html" class="wx-card bg-blue-50 p-0 overflow-hidden">
+          <div class="h-24 bg-blue-400 flex items-center justify-center">
+            <div class="flex gap-1">
+              <div class="game-card flipped w-12 h-16">
+                <div class="game-card-inner">
+                  <div class="game-card-front">
+                    <i class="fas fa-question"></i>
+                  </div>
+                  <div class="game-card-back">
+                    <span class="text-xs">Apple</span>
+                  </div>
+                </div>
+              </div>
+              <div class="game-card w-12 h-16">
+                <div class="game-card-inner">
+                  <div class="game-card-front">
+                    <i class="fas fa-question"></i>
+                  </div>
+                  <div class="game-card-back">
+                    <span class="text-xs">苹果</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="font-medium">单词配对</h3>
+            <div class="flex justify-between items-center mt-1">
+              <span class="text-xs text-gray-500">记忆力训练</span>
+              <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">简单</span>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 听力选择题 -->
+        <a href="game-listening.html" class="wx-card bg-purple-50 p-0 overflow-hidden">
+          <div class="h-24 bg-purple-400 flex items-center justify-center">
+            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+              <i class="fas fa-volume-up text-purple-600 text-lg"></i>
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="font-medium">听力选择</h3>
+            <div class="flex justify-between items-center mt-1">
+              <span class="text-xs text-gray-500">听力训练</span>
+              <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">中等</span>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 拼写闯关 -->
+        <a href="game-spelling.html" class="wx-card bg-green-50 p-0 overflow-hidden">
+          <div class="h-24 bg-green-400 flex items-center justify-center">
+            <div class="flex">
+              <span class="w-6 h-6 flex items-center justify-center bg-white m-0.5 rounded shadow-sm">A</span>
+              <span class="w-6 h-6 flex items-center justify-center bg-white m-0.5 rounded shadow-sm">P</span>
+              <span class="w-6 h-6 flex items-center justify-center bg-white m-0.5 rounded shadow-sm">P</span>
+              <span class="w-6 h-6 flex items-center justify-center bg-white m-0.5 rounded shadow-sm">L</span>
+              <span class="w-6 h-6 flex items-center justify-center bg-white m-0.5 rounded shadow-sm">E</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="font-medium">拼写闯关</h3>
+            <div class="flex justify-between items-center mt-1">
+              <span class="text-xs text-gray-500">拼写能力</span>
+              <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">困难</span>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 单词连线 -->
+        <a href="game-connecting.html" class="wx-card bg-yellow-50 p-0 overflow-hidden">
+          <div class="h-24 bg-yellow-400 flex items-center justify-center">
+            <div class="text-center">
+              <div class="flex mb-1">
+                <span class="text-xs bg-white py-1 px-2 rounded mr-1">Cat</span>
+                <span class="text-xs bg-white py-1 px-2 rounded">狗</span>
+              </div>
+              <div class="flex">
+                <span class="text-xs bg-white py-1 px-2 rounded mr-1">Dog</span>
+                <span class="text-xs bg-white py-1 px-2 rounded">猫</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <h3 class="font-medium">单词连线</h3>
+            <div class="flex justify-between items-center mt-1">
+              <span class="text-xs text-gray-500">词义匹配</span>
+              <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">简单</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- 最近游戏 -->
+      <h3 class="font-medium mt-6 mb-3">最近游戏</h3>
+      <div class="wx-card mb-4">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center mr-3">
+              <i class="fas fa-volume-up text-purple-600"></i>
+            </div>
+            <div>
+              <h4 class="font-medium">听力选择</h4>
+              <div class="text-xs text-gray-500">昨天 15:30</div>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="font-medium text-green-600">85%</div>
+            <div class="text-xs text-gray-500">正确率</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="wx-card">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mr-3">
+              <i class="fas fa-th text-blue-600"></i>
+            </div>
+            <div>
+              <h4 class="font-medium">单词配对</h4>
+              <div class="text-xs text-gray-500">3天前</div>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="font-medium text-green-600">100%</div>
+            <div class="text-xs text-gray-500">完成度</div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-1">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-home text-xl"></i>
+          <span class="text-xs mt-1">首页</span>
+        </a>
+        <a href="learning.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-book text-xl"></i>
+          <span class="text-xs mt-1">学习</span>
+        </a>
+        <a href="speech.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-microphone text-xl"></i>
+          <span class="text-xs mt-1">语音</span>
+        </a>
+        <a href="games.html" class="flex flex-col items-center w-1/5 py-1 text-green-600">
+          <i class="fas fa-gamepad text-xl"></i>
+          <span class="text-xs mt-1">游戏</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-user text-xl"></i>
+          <span class="text-xs mt-1">我的</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // 更新状态栏时间
+    function updateStatusTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      document.querySelector('.status-time').textContent = `${hours}:${minutes}`;
+    }
+    
+    // 初始更新时间并设置定时器每分钟更新一次
+    updateStatusTime();
+    setInterval(updateStatusTime, 60000);
+  </script>
+</body>
+</html> 

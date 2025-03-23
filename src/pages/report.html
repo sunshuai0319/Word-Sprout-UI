@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>学习报告 - WordSprout</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+  <div class="wx-container">
+    <!-- 添加iPhone状态栏 -->
+    <div class="iphone-status-bar">
+      <div class="status-carrier">中国移动</div>
+      <div class="status-time">14:25</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <div class="battery-icon">
+          <div class="battery-level"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="wx-page fade-in">
+      <!-- 顶部标题栏 -->
+      <div class="wx-header flex items-center justify-between p-3 bg-white shadow-sm rounded-b-2xl mb-2 relative overflow-hidden">
+        <!-- 添加背景装饰 -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 to-purple-400"></div>
+        
+        <div class="flex items-center">
+          <button class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-2 hover:bg-gray-100 transition duration-200" onclick="window.history.back()">
+            <i class="fas fa-arrow-left text-gray-500"></i>
+          </button>
+          <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-500">学习报告</h1>
+        </div>
+        <div>
+          <!-- 空白占位，保持布局平衡 -->
+        </div>
+      </div>
+
+      <!-- 时间选择器 -->
+      <div class="flex items-center justify-between mb-6">
+        <button class="scale-on-press">
+          <i class="fas fa-chevron-left text-gray-400"></i>
+        </button>
+        <div class="font-medium">
+          本周学习情况（7.1 - 7.7）
+        </div>
+        <button class="scale-on-press">
+          <i class="fas fa-chevron-right text-gray-400"></i>
+        </button>
+      </div>
+
+      <!-- 学习概况卡片 -->
+      <div class="wx-card mb-6">
+        <h3 class="font-medium mb-3">学习概况</h3>
+        
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <div class="bg-green-50 rounded-lg p-3 text-center">
+            <div class="text-xl font-bold text-green-600">28</div>
+            <div class="text-xs text-gray-500">学习单词</div>
+          </div>
+          <div class="bg-blue-50 rounded-lg p-3 text-center">
+            <div class="text-xl font-bold text-blue-600">7</div>
+            <div class="text-xs text-gray-500">连续天数</div>
+          </div>
+          <div class="bg-purple-50 rounded-lg p-3 text-center">
+            <div class="text-xl font-bold text-purple-600">86%</div>
+            <div class="text-xs text-gray-500">平均正确率</div>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between mb-2">
+          <span>总学习时长</span>
+          <span class="text-gray-500">105分钟</span>
+        </div>
+        <div class="progress-container mb-6">
+          <div class="progress-bar" style="width: 75%;"></div>
+        </div>
+        
+        <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-100">
+          <div class="flex items-start">
+            <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+            <div>
+              <p class="text-sm">学习建议：</p>
+              <p class="text-xs text-gray-600 mt-1">
+                您的孩子在听力方面表现良好，建议可以增加拼写训练的频率，以巩固单词记忆。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 学习进度图表 -->
+      <div class="wx-card mb-6">
+        <h3 class="font-medium mb-3">每日学习单词量</h3>
+        
+        <div class="h-40 flex items-end justify-between px-2">
+          <div class="flex flex-col items-center">
+            <div class="bg-green-500 w-8 h-16 rounded-t-md"></div>
+            <div class="text-xs mt-1">一</div>
+            <div class="text-xs text-gray-500">4</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="bg-green-500 w-8 h-24 rounded-t-md"></div>
+            <div class="text-xs mt-1">二</div>
+            <div class="text-xs text-gray-500">6</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="bg-green-500 w-8 h-12 rounded-t-md"></div>
+            <div class="text-xs mt-1">三</div>
+            <div class="text-xs text-gray-500">3</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="bg-green-500 w-8 h-32 rounded-t-md"></div>
+            <div class="text-xs mt-1">四</div>
+            <div class="text-xs text-gray-500">8</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="bg-green-500 w-8 h-20 rounded-t-md"></div>
+            <div class="text-xs mt-1">五</div>
+            <div class="text-xs text-gray-500">5</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="bg-green-500 w-8 h-8 rounded-t-md"></div>
+            <div class="text-xs mt-1">六</div>
+            <div class="text-xs text-gray-500">2</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="bg-green-500 w-8 h-0 rounded-t-md"></div>
+            <div class="text-xs mt-1">日</div>
+            <div class="text-xs text-gray-500">0</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 各项能力分析 -->
+      <div class="wx-card mb-6">
+        <h3 class="font-medium mb-3">各项能力分析</h3>
+        
+        <div class="mb-4">
+          <div class="flex justify-between items-center mb-1">
+            <div class="flex items-center">
+              <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+              <span class="text-sm">词汇量</span>
+            </div>
+            <span class="text-sm">85%</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 85%;"></div>
+          </div>
+        </div>
+        
+        <div class="mb-4">
+          <div class="flex justify-between items-center mb-1">
+            <div class="flex items-center">
+              <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+              <span class="text-sm">发音</span>
+            </div>
+            <span class="text-sm">70%</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar bg-blue-500" style="width: 70%;"></div>
+          </div>
+        </div>
+        
+        <div class="mb-4">
+          <div class="flex justify-between items-center mb-1">
+            <div class="flex items-center">
+              <div class="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
+              <span class="text-sm">听力</span>
+            </div>
+            <span class="text-sm">92%</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar bg-purple-500" style="width: 92%;"></div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <div class="flex items-center">
+              <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+              <span class="text-sm">拼写</span>
+            </div>
+            <span class="text-sm">65%</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar bg-yellow-500" style="width: 65%;"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 最近掌握的单词 -->
+      <h3 class="font-medium mb-3">最近掌握的单词</h3>
+      <div class="overflow-x-auto">
+        <div class="flex space-x-4 pb-2">
+          <div class="wx-card w-40 flex-shrink-0 py-3">
+            <div class="text-center">
+              <h4 class="text-lg font-bold">Elephant</h4>
+              <p class="text-sm text-gray-500">大象</p>
+              <div class="flex justify-center mt-2">
+                <i class="fas fa-check-circle text-green-500"></i>
+              </div>
+            </div>
+          </div>
+          <div class="wx-card w-40 flex-shrink-0 py-3">
+            <div class="text-center">
+              <h4 class="text-lg font-bold">Lion</h4>
+              <p class="text-sm text-gray-500">狮子</p>
+              <div class="flex justify-center mt-2">
+                <i class="fas fa-check-circle text-green-500"></i>
+              </div>
+            </div>
+          </div>
+          <div class="wx-card w-40 flex-shrink-0 py-3">
+            <div class="text-center">
+              <h4 class="text-lg font-bold">Monkey</h4>
+              <p class="text-sm text-gray-500">猴子</p>
+              <div class="flex justify-center mt-2">
+                <i class="fas fa-check-circle text-green-500"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-1">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-home text-xl"></i>
+          <span class="text-xs mt-1">首页</span>
+        </a>
+        <a href="learning.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-book text-xl"></i>
+          <span class="text-xs mt-1">学习</span>
+        </a>
+        <a href="speech.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-microphone text-xl"></i>
+          <span class="text-xs mt-1">语音</span>
+        </a>
+        <a href="games.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-gamepad text-xl"></i>
+          <span class="text-xs mt-1">游戏</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
+          <i class="fas fa-user text-xl"></i>
+          <span class="text-xs mt-1">我的</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // 更新状态栏时间
+    function updateStatusTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      document.querySelector('.status-time').textContent = `${hours}:${minutes}`;
+    }
+    
+    // 初始更新时间并设置定时器每分钟更新一次
+    updateStatusTime();
+    setInterval(updateStatusTime, 60000);
+  </script>
+</body>
+</html> 

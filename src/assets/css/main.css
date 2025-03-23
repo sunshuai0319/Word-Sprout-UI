@@ -1,0 +1,893 @@
+/**
+ * WordSprout - 单词萌芽
+ * 主要CSS文件
+ */
+
+/* 全局变量 */
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #388E3C;
+  --accent-color: #8BC34A;
+  --danger-color: #F44336;
+  --warning-color: #FFC107;
+  --info-color: #2196F3;
+  --success-color: #4CAF50;
+  
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  
+  --bg-light: #f5f5f5;
+  --bg-white: #ffffff;
+  
+  --border-radius: 8px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  /* 安全区域相关变量 */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+}
+
+/* 基础容器 */
+.wx-container {
+  max-width: 768px;
+  margin: 0 auto;
+  background-color: var(--bg-light);
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: env(safe-area-inset-bottom, 60px);
+  overflow-x: hidden;
+}
+
+.wx-page {
+  padding: 0 16px 16px;
+  padding-top: calc(10px + var(--safe-area-top)); /* 顶部添加安全区域内边距 */
+  padding-left: calc(16px + var(--safe-area-left));
+  padding-right: calc(16px + var(--safe-area-right));
+  padding-bottom: 60px; /* 为底部导航栏留出空间 */
+}
+
+/* 卡片样式 */
+.wx-card {
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* iPhone顶部状态栏样式 */
+.iphone-status-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  color: white;
+  padding: 8px 16px 4px;
+  padding-top: calc(8px + var(--safe-area-top)); /* 添加安全区域内边距 */
+  padding-left: calc(16px + var(--safe-area-left));
+  padding-right: calc(16px + var(--safe-area-right));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  z-index: 1000;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  height: calc(44px + var(--safe-area-top)); /* 高度适应安全区域 */
+}
+
+.status-time {
+  font-weight: 600;
+}
+
+.status-icons {
+  display: flex;
+  align-items: center;
+}
+
+.status-icons i {
+  margin-left: 6px;
+}
+
+.battery-icon {
+  position: relative;
+  width: 20px;
+  height: 10px;
+  border: 1px solid white;
+  border-radius: 2px;
+  margin-left: 6px;
+}
+
+.battery-icon:after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 2px;
+  width: 2px;
+  height: 6px;
+  background-color: white;
+  border-radius: 0 2px 2px 0;
+}
+
+.battery-level {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  bottom: 1px;
+  width: 80%;
+  background-color: white;
+  border-radius: 1px;
+}
+
+/* 按钮样式 */
+.wx-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.wx-button-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.wx-button-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.wx-button-outline {
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  background-color: transparent;
+}
+
+/* 标签样式 */
+.wx-tag {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.wx-tag-green {
+  background-color: #e8f5e9;
+  color: var(--primary-color);
+}
+
+.wx-tag-yellow {
+  background-color: #fffde7;
+  color: var(--warning-color);
+}
+
+.wx-tag-red {
+  background-color: #ffebee;
+  color: var(--danger-color);
+}
+
+.wx-tag-blue {
+  background-color: #e3f2fd;
+  color: var(--info-color);
+}
+
+/* 进度条样式 */
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* 动画效果 */
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.scale-on-press {
+  transition: transform 0.1s ease;
+}
+
+.scale-on-press:active {
+  transform: scale(0.98);
+}
+
+/* 头像样式 */
+.wx-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #e0e0e0;
+}
+
+.wx-avatar-sm {
+  width: 32px;
+  height: 32px;
+}
+
+.wx-avatar-lg {
+  width: 64px;
+  height: 64px;
+}
+
+/* 图标按钮 */
+.wx-icon-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.wx-icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 列表样式 */
+.wx-list-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.wx-list-item:last-child {
+  border-bottom: none;
+}
+
+/* 开关样式 */
+.wx-switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.wx-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.wx-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.wx-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .wx-switch-slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .wx-switch-slider:before {
+  transform: translateX(24px);
+}
+
+/* 加载动画 */
+.wx-loading {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 通知提示样式 */
+.wx-notification {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 16px;
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 250px;
+  text-align: center;
+  animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+}
+
+@keyframes slideDown {
+  from { transform: translate(-50%, -20px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* 波形动画 */
+.waveform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+}
+
+.waveform-bar {
+  width: 4px;
+  margin: 0 2px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+  animation: waveform 1.2s ease-in-out infinite;
+}
+
+.waveform-bar:nth-child(2) { animation-delay: 0.1s; }
+.waveform-bar:nth-child(3) { animation-delay: 0.2s; }
+.waveform-bar:nth-child(4) { animation-delay: 0.3s; }
+.waveform-bar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes waveform {
+  0%, 100% { height: 10px; }
+  50% { height: 30px; }
+}
+
+/* 翻转卡片 */
+.flip-card {
+  perspective: 1000px;
+  height: 200px;
+  margin-bottom: 16px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: var(--border-radius);
+}
+
+.flip-card-front {
+  background-color: var(--bg-white);
+  box-shadow: var(--box-shadow);
+}
+
+.flip-card-back {
+  background-color: var(--primary-color);
+  color: white;
+  transform: rotateY(180deg);
+  box-shadow: var(--box-shadow);
+}
+
+/* 响应式设计 */
+@media (max-width: 375px) {
+  .wx-page {
+    padding: 0 12px 12px;
+    padding-top: calc(10px + var(--safe-area-top));
+    padding-left: calc(12px + var(--safe-area-left));
+    padding-right: calc(12px + var(--safe-area-right));
+  }
+  
+  .wx-card {
+    padding: 12px;
+  }
+  
+  h1.text-xl {
+    font-size: 1rem;
+  }
+  
+  /* 调整顶部标题栏在小屏幕上的显示 */
+  .flex.items-center.justify-between.p-3 {
+    padding: 8px 12px;
+  }
+  
+  /* 在小屏幕上缩短标题 */
+  .flex.items-center .text-xl.font-bold {
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+  
+  .iphone-status-bar {
+    padding: 6px 12px 2px;
+    padding-top: calc(6px + var(--safe-area-top));
+    padding-left: calc(12px + var(--safe-area-left));
+    padding-right: calc(12px + var(--safe-area-right));
+    font-size: 11px;
+  }
+}
+
+/* 微信小程序特定的样式 */
+.wx-button::after {
+  display: none;
+}
+
+/* 实用工具类 */
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-md {
+  font-size: 1rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* 增强顶部标题栏样式 */
+.wx-header {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.wx-header:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.wx-header h1 {
+  position: relative;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* 标题栏中的按钮样式 */
+.wx-header button {
+  position: relative;
+  overflow: hidden;
+}
+
+.wx-header button:active {
+  transform: scale(0.95);
+}
+
+.wx-header button:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.wx-header button:active:after {
+  opacity: 1;
+}
+
+/* 确保其他页面标题栏中的返回按钮样式一致 */
+.wx-header .fa-arrow-left {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 针对微信小程序头部的特殊样式 */
+@media (max-width: 414px) {
+  .wx-header {
+    padding: 8px 12px;
+    margin-top: 2px;
+  }
+  
+  .wx-header h1 {
+    font-size: 1rem;
+  }
+  
+  /* 在小屏幕上显示短标题 */
+  .title-full {
+    display: none;
+  }
+  
+  .title-short {
+    display: block;
+  }
+}
+
+@media (min-width: 415px) {
+  .title-full {
+    display: block;
+  }
+  
+  .title-short {
+    display: none;
+  }
+}
+
+/* 页面过渡动画 */
+.page-transition {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* 输入框样式 */
+.wx-input {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  transition: var(--transition-default);
+}
+
+.wx-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* 徽章样式 */
+.wx-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 字体大小辅助类 */
+.text-xs { font-size: 12px; }
+.text-sm { font-size: 14px; }
+.text-base { font-size: 16px; }
+.text-lg { font-size: 18px; }
+.text-xl { font-size: 20px; }
+.text-2xl { font-size: 24px; }
+.text-3xl { font-size: 30px; }
+
+/* 字重辅助类 */
+.font-light { font-weight: 300; }
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* 页面特定样式 */
+
+/* 首页 */
+.daily-goal-card {
+  border-left: 4px solid var(--primary-color);
+}
+
+/* 单词学习页 */
+.word-card {
+  transition: transform 0.3s ease;
+}
+
+.word-example {
+  border-left: 3px solid var(--primary-light);
+  padding-left: 10px;
+}
+
+/* 语音训练页 */
+.pronunciation-score {
+  font-size: 42px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.recording {
+  background-color: #ffecec !important;
+  color: #ff4a4a !important;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* 游戏中心页 */
+.game-item {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.game-item:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-5px);
+}
+
+/* 错题本页面 */
+.wrong-word-item {
+  border-left: 3px solid var(--error-color);
+}
+
+/* 学习报告页 */
+.weekly-bars {
+  display: flex;
+  align-items: flex-end;
+  height: 200px;
+  padding: 0 10px;
+}
+
+.weekly-bar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.weekly-bar {
+  width: 20px;
+  background-color: var(--primary-color);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.5s ease;
+}
+
+.weekly-day {
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.weekly-value {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.accuracy-circle {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.accuracy-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.accuracy-label {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* 成就样式 */
+.achievement-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 10px;
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.achievement-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  margin-right: 12px;
+  font-size: 18px;
+}
+
+.achievement-info {
+  flex: 1;
+}
+
+.achievement-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.achievement-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.achievement-item.locked {
+  opacity: 0.6;
+}
+
+.achievement-item.locked .achievement-icon {
+  background-color: #f0f0f0;
+  color: var(--text-light);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .wx-button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .wx-button-lg {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  
+  .weekly-bars {
+    height: 150px;
+  }
+  
+  .weekly-bar {
+    width: 16px;
+  }
+  
+  .weekly-day, .weekly-value {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wx-card {
+    border-radius: 6px;
+  }
+  
+  .accuracy-circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .accuracy-text {
+    font-size: 20px;
+  }
+  
+  .achievement-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  
+  .weekly-bar {
+    width: 12px;
+  }
+}
+
+/* 底部导航栏相关样式 */
+.wx-page {
+  padding-bottom: 60px; /* 为底部导航栏留出空间 */
+}
+
+/* 确保容器内容不被底部导航遮挡 */
+.wx-container {
+  padding-bottom: env(safe-area-inset-bottom, 60px);
+}
+
+/* 导航栏样式 */
+.fixed.bottom-0 {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  z-index: 50;
+}
+
+/* 导航项动画效果 */
+.fixed.bottom-0 a {
+  transition: all 0.2s ease;
+}
+
+.fixed.bottom-0 a:active {
+  transform: scale(0.9);
+}
+
+/* 动画效果 */
+.scale-on-press:active {
+  transform: scale(0.98);
+} 
