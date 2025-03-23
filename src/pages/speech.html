@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
-  <div class="wx-container">
-    <!-- 添加iPhone状态栏 -->
+  <div class="wx-container bg-light">
+    <!-- iPhone状态栏 -->
     <div class="iphone-status-bar">
       <div class="status-carrier">中国移动</div>
       <div class="status-time">14:25</div>
@@ -25,18 +25,26 @@
       </div>
     </div>
     
-    <div class="wx-page fade-in">
+    <div class="wx-page wx-fade-in">
       <!-- 顶部标题栏 -->
-      <div class="wx-header flex items-center justify-between p-3 bg-white shadow-sm rounded-b-2xl mb-2 relative overflow-hidden">
-        <!-- 添加背景装饰 -->
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-blue-400"></div>
+      <div class="wx-header rounded-b-2xl mb-4 relative">
+        <!-- 渐变背景装饰 -->
+        <div class="gradient-bg"></div>
         
-        <div class="flex items-center">
-          <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-500">语音训练</h1>
+        <div class="flex-none">
+          <a href="javascript:history.back()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 hover:bg-gray-100 transition duration-200">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+          </a>
         </div>
-        <div>
-          <!-- 标题栏右侧为空，保持布局一致 -->
+        
+        <div class="title text-center flex-grow">
+          <h1 class="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent whitespace-nowrap mx-auto flex items-center justify-center">
+            <i class="fas fa-microphone text-green-500 mr-1"></i>
+            语音训练
+          </h1>
         </div>
+        
+        <div class="flex-none w-8"></div>
       </div>
 
       <!-- 训练卡片 -->
@@ -149,27 +157,23 @@
     </div>
 
     <!-- 底部导航 -->
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-1">
-      <div class="flex justify-between items-center">
-        <a href="index.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
-          <i class="fas fa-home text-xl"></i>
-          <span class="text-xs mt-1">首页</span>
+    <div class="fixed bottom-0 left-0 w-full nav-footer">
+      <div class="flex justify-around">
+        <a href="index.html">
+          <i class="fas fa-home"></i>
+          <span>首页</span>
         </a>
-        <a href="learning.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
-          <i class="fas fa-book text-xl"></i>
-          <span class="text-xs mt-1">学习</span>
+        <a href="learning.html">
+          <i class="fas fa-book"></i>
+          <span>学习</span>
         </a>
-        <a href="speech.html" class="flex flex-col items-center w-1/5 py-1 text-green-600">
-          <i class="fas fa-microphone text-xl"></i>
-          <span class="text-xs mt-1">语音</span>
+        <a href="games.html">
+          <i class="fas fa-gamepad"></i>
+          <span>游戏</span>
         </a>
-        <a href="games.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
-          <i class="fas fa-gamepad text-xl"></i>
-          <span class="text-xs mt-1">游戏</span>
-        </a>
-        <a href="profile.html" class="flex flex-col items-center w-1/5 py-1 text-gray-500">
-          <i class="fas fa-user text-xl"></i>
-          <span class="text-xs mt-1">我的</span>
+        <a href="profile.html">
+          <i class="fas fa-user"></i>
+          <span>我的</span>
         </a>
       </div>
     </div>

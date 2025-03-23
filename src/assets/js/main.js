@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
       initWrongWordsPage();
       break;
   }
+
+  hideScrollbars();
 });
 
 // 获取当前页面名称
@@ -739,4 +741,93 @@ function initWrongWordsPage() {
       }
     });
   }
-} 
+}
+
+// 更新状态栏时间
+function updateStatusTime() {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const timeElement = document.querySelector('.status-time');
+  if (timeElement) {
+    timeElement.textContent = `${hours}:${minutes}`;
+  }
+}
+
+// 初始更新时间并设置定时器每分钟更新一次
+if (document.querySelector('.status-time')) {
+  updateStatusTime();
+  setInterval(updateStatusTime, 60000);
+}
+
+// 隐藏所有滚动条
+function hideScrollbars() {
+  // 创建一个样式元素
+  const style = document.createElement('style');
+  
+  // 添加滚动条隐藏规则
+  style.textContent = `
+    html, body, div, main, section, article, aside, nav {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    
+    html::-webkit-scrollbar, 
+    body::-webkit-scrollbar, 
+    div::-webkit-scrollbar, 
+    main::-webkit-scrollbar, 
+    section::-webkit-scrollbar, 
+    article::-webkit-scrollbar, 
+    aside::-webkit-scrollbar, 
+    nav::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+  `;
+  
+  // 将样式添加到head
+  document.head.appendChild(style);
+  
+  // 对所有有overflow样式的元素添加滚动条隐藏类
+  const scrollableElements = document.querySelectorAll('[class*="overflow"]');
+  scrollableElements.forEach(el => {
+    el.style.scrollbarWidth = 'none';
+    el.style.msOverflowStyle = 'none';
+  });
+}
+
+// 模拟单词发音功能
+function playPronunciation(word) {
+  console.log(`播放单词发音: ${word}`);
+  // 实际项目中应该连接到语音API
+}
+
+// 单词卡片翻转效果
+function initFlipCards() {
+  const flipCards = document.querySelectorAll('.flip-card');
+  flipCards.forEach(card => {
+    card.addEventListener('click', function() {
+      this.classList.toggle('flipped');
+    });
+  });
+}
+
+// 处理难度选择
+function initDifficultySelection() {
+  const difficultyCards = document.querySelectorAll('.difficulty-card');
+  difficultyCards.forEach(card => {
+    card.addEventListener('click', function() {
+      // 移除其他卡片的选中状态
+      difficultyCards.forEach(c => c.classList.remove('selected'));
+      // 添加当前卡片的选中状态
+      this.classList.add('selected');
+    });
+  });
+}
+
+// 窗口大小变化时重新应用滚动条隐藏
+window.addEventListener('resize', hideScrollbars);
+
+// 页面完全加载后再次确保滚动条隐藏（捕获懒加载内容）
+window.addEventListener('load', hideScrollbars); 

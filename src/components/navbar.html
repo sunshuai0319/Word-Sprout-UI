@@ -8,10 +8,6 @@
     <i class="fas fa-book text-lg"></i>
     <span class="text-xs mt-1">学习</span>
   </a>
-  <a href="speech.html" class="flex flex-col items-center">
-    <i class="fas fa-microphone text-lg"></i>
-    <span class="text-xs mt-1">语音</span>
-  </a>
   <a href="games.html" class="flex flex-col items-center">
     <i class="fas fa-gamepad text-lg"></i>
     <span class="text-xs mt-1">游戏</span>
@@ -20,4 +16,43 @@
     <i class="fas fa-user text-lg"></i>
     <span class="text-xs mt-1">我的</span>
   </a>
-</nav> 
+</nav>
+
+<!-- 底部导航 -->
+<div class="fixed bottom-0 left-0 w-full nav-footer">
+  <div class="flex justify-around">
+    <a href="index.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>首页</span>
+    </a>
+    <a href="learning.html" class="nav-item">
+      <i class="fas fa-book"></i>
+      <span>学习</span>
+    </a>
+    <a href="games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>游戏</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>我的</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  // 根据当前页面路径激活对应的导航项
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    const navItems = document.querySelectorAll('.nav-footer a');
+    
+    navItems.forEach(item => {
+      const href = item.getAttribute('href');
+      if (currentPath.includes(href)) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  });
+</script> 
