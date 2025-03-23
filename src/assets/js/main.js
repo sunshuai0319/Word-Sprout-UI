@@ -55,6 +55,40 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   hideScrollbars();
+
+  /**
+   * Preview页面脚本
+   */
+  if (document.getElementById('pageSelector')) {
+    // 页面选择器改变事件
+    document.getElementById('pageSelector').addEventListener('change', function() {
+      document.getElementById('mobileFrame').src = this.value;
+    });
+
+    // 刷新按钮点击事件
+    document.getElementById('refreshBtn')?.addEventListener('click', function() {
+      const frame = document.getElementById('mobileFrame');
+      frame.src = frame.src;
+    });
+  }
+
+  /* ====================
+   * Navbar组件脚本
+   * ==================== */
+  // 根据当前页面路径激活对应的导航项
+  const navItems = document.querySelectorAll('.nav-footer a');
+  if (navItems.length > 0) {
+    const currentPath = window.location.pathname;
+    
+    navItems.forEach(item => {
+      const href = item.getAttribute('href');
+      if (currentPath.includes(href)) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  }
 });
 
 // 获取当前页面名称

@@ -1243,4 +1243,293 @@ body {
   width: 80%;
   background-color: var(--success-color);
   border-radius: 1px;
+}
+
+/* ====================
+ * Preview页面样式
+ * ==================== */
+.preview-body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #F3ECF7;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-header {
+  background: linear-gradient(to right, #7363E8, #F391A6);
+  padding: 20px;
+  color: white;
+  text-align: center;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.preview-container {
+  flex: 1;
+  padding: 30px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mobile-preview {
+  width: 375px;
+  height: 768px;
+  position: relative;
+  background: white;
+  border-radius: 40px;
+  box-shadow: 0 25px 50px rgba(115, 99, 232, 0.25);
+  overflow: hidden;
+  margin: 20px auto;
+  border: 12px solid #333;
+}
+
+.mobile-preview::before {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 30px;
+  background: #333;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 0 0 20px 20px;
+  z-index: 10;
+}
+
+.mobile-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.select-container {
+  width: 375px;
+  margin: 0 auto 30px;
+}
+
+.page-select {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 20px;
+  background: white;
+  border: 2px solid #7363E8;
+  color: #7363E8;
+  font-size: 16px;
+  font-weight: 500;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%237363E8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 15px) center;
+  box-shadow: 0 4px 12px rgba(115, 99, 232, 0.1);
+  transition: all 0.3s;
+}
+
+.page-select:focus {
+  outline: none;
+  box-shadow: 0 4px 20px rgba(115, 99, 232, 0.2);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.action-button {
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-weight: 500;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+.primary-button {
+  background: #7363E8;
+  color: white;
+}
+
+.primary-button:hover {
+  background: #6253d8;
+  box-shadow: 0 6px 16px rgba(115, 99, 232, 0.25);
+}
+
+.secondary-button {
+  background: white;
+  color: #7363E8;
+  border: 2px solid #7363E8;
+}
+
+.secondary-button:hover {
+  background: #F9F6FB;
+  box-shadow: 0 6px 16px rgba(115, 99, 232, 0.15);
+}
+
+/* ====================
+ * Gallery页面样式
+ * ==================== */
+.gallery-body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #F3ECF7;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+.gallery-header {
+  background: linear-gradient(to right, #7363E8, #F391A6);
+  padding: 20px;
+  color: white;
+  text-align: center;
+  border-radius: 0 0 30px 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.gallery-item {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(115, 99, 232, 0.12);
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 580px;
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(115, 99, 232, 0.2);
+}
+
+.item-header {
+  padding: 15px;
+  text-align: center;
+  background-color: #F9F6FB;
+  border-bottom: 1px solid #eee;
+}
+
+.item-title {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+  margin: 0;
+}
+
+.iframe-container {
+  width: 100%;
+  height: 520px;
+  position: relative;
+  overflow: hidden;
+}
+
+.iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 568px;
+  border: none;
+  transform: scale(0.85);
+  transform-origin: 0 0;
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%) scale(0.85);
+}
+
+.back-btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 12px 25px;
+  background: white;
+  color: #7363E8;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(115, 99, 232, 0.15);
+  transition: all 0.3s;
+  border: 2px solid #7363E8;
+}
+
+.back-btn:hover {
+  background: #7363E8;
+  color: white;
+  box-shadow: 0 6px 16px rgba(115, 99, 232, 0.25);
+}
+
+/* ====================
+ * 重定向页面样式 (src/index.html)
+ * ==================== */
+.redirect-body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #F3ECF7;
+  color: #333;
+}
+
+.redirect-container {
+  text-align: center;
+  padding: 30px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(115, 99, 232, 0.12);
+  max-width: 90%;
+}
+
+.redirect-loader {
+  border: 4px solid rgba(115, 99, 232, 0.1);
+  border-top: 4px solid #7363E8;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 30px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.redirect-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, #7363E8, #F391A6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.redirect-text {
+  margin: 10px 0;
+  line-height: 1.5;
+  color: #666;
+}
+
+.redirect-link {
+  color: #7363E8; 
+  text-decoration: none; 
+  font-weight: 500;
 } 

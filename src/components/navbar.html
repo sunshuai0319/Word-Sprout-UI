@@ -38,21 +38,4 @@
       <span>我的</span>
     </a>
   </div>
-</div>
-
-<script>
-  // 根据当前页面路径激活对应的导航项
-  document.addEventListener('DOMContentLoaded', function() {
-    const currentPath = window.location.pathname;
-    const navItems = document.querySelectorAll('.nav-footer a');
-    
-    navItems.forEach(item => {
-      const href = item.getAttribute('href');
-      if (currentPath.includes(href)) {
-        item.classList.add('active');
-      } else {
-        item.classList.remove('active');
-      }
-    });
-  });
-</script> 
+</div> 
