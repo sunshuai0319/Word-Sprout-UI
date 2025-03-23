@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>收藏单词 - WordSprout</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <style>
+    .word-card {
+      border-radius: 12px;
+      background: white;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .word-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+    
+    .word-card.selected {
+      border: 2px solid #7363E8;
+      background: rgba(115, 99, 232, 0.05);
+    }
+    
+    .word-actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+    }
+    
+    .word-action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 6px;
+      background: white;
+      border: 1px solid #E1E7ED;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .word-action-btn:hover {
+      background: #F5F7FA;
+    }
+    
+    .favorite-btn.active {
+      border-color: #FF4B4B;
+      color: #FF4B4B;
+    }
+    
+    .word-progress {
+      height: 6px;
+      background: #F0F0F5;
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+    
+    .word-progress-bar {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(to right, #2CCE89, #1EAE98);
+    }
+    
+    .category-chip {
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      display: inline-block;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .category-chip.active {
+      color: white;
+      font-weight: 500;
+    }
+    
+    .search-box {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      background: white;
+      border-radius: 20px;
+      border: 1px solid #E1E7ED;
+      transition: all 0.3s ease;
+    }
+    
+    .search-box:focus-within {
+      border-color: #7363E8;
+      box-shadow: 0 0 0 2px rgba(115, 99, 232, 0.1);
+    }
+    
+    .search-input {
+      border: none;
+      outline: none;
+      padding: 10px 0;
+      flex-grow: 1;
+      background: transparent;
+    }
+    
+    .search-input::placeholder {
+      color: #A0AEC0;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 30px 20px;
+    }
+    
+    .empty-image {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 20px;
+      opacity: 0.8;
+    }
+    
+    .action-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    .toolbar-btn {
+      padding: 6px 14px;
+      border-radius: 18px;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .toolbar-btn i {
+      margin-right: 6px;
+    }
+    
+    .toolbar-btn.primary {
+      background: #7363E8;
+      color: white;
+    }
+    
+    .toolbar-btn.primary:hover {
+      background: #6350E0;
+    }
+    
+    .toolbar-btn.danger {
+      background: #FF4B4B;
+      color: white;
+    }
+    
+    .toolbar-btn.danger:hover {
+      background: #FF3333;
+    }
+    
+    .toolbar-btn.secondary {
+      background: #F5F7FA;
+      color: #64748B;
+    }
+    
+    .toolbar-btn.secondary:hover {
+      background: #E9EDF2;
+    }
+    
+    /* 弹窗样式 */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal-content {
+      width: 85%;
+      max-width: 350px;
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      position: relative;
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #F5F5F7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    
+    .modal-close:hover {
+      background: #E5E5EA;
+    }
+    
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .checkbox-wrapper:hover {
+      background: #F5F7FA;
+    }
+    
+    .custom-checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #E1E7ED;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    
+    .checkbox-wrapper.checked .custom-checkbox {
+      background: #7363E8;
+      border-color: #7363E8;
+    }
+    
+    .checkbox-wrapper.checked .checkmark {
+      opacity: 1;
+    }
+    
+    .checkmark {
+      color: white;
+      font-size: 12px;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+    
+    .category-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wx-container bg-light">
+    <!-- iPhone状态栏 -->
+    <div class="iphone-status-bar">
+      <div class="status-carrier">中国移动</div>
+      <div class="status-time">17:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <div class="battery-icon">
+          <div class="battery-level"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="wx-page wx-fade-in">
+      <!-- 顶部标题栏 -->
+      <div class="wx-header rounded-b-2xl mb-4 relative">
+        <!-- 渐变背景装饰 -->
+        <div class="gradient-bg"></div>
+        
+        <div class="flex-none">
+          <a href="profile.html" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 hover:bg-gray-100 transition duration-200">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+          </a>
+        </div>
+        
+        <div class="title text-center flex-grow">
+          <h1 class="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent whitespace-nowrap mx-auto flex items-center justify-center">
+            <i class="fas fa-bookmark text-green-500 mr-1"></i>
+            收藏单词
+          </h1>
+        </div>
+        
+        <div class="flex-none w-8">
+          <div id="select-mode-btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition duration-200 cursor-pointer">
+            <i class="fas fa-check-square text-gray-600"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 搜索框 -->
+      <div class="search-box mb-4">
+        <i class="fas fa-search text-gray-400 mr-2"></i>
+        <input type="text" class="search-input" placeholder="搜索单词或标签">
+        <button class="text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <!-- 多选模式下的工具栏 -->
+      <div id="action-toolbar" class="action-toolbar hidden">
+        <div class="flex">
+          <div class="toolbar-btn secondary mr-2">
+            <i class="fas fa-check-double"></i>
+            全选
+          </div>
+          <div class="counter text-sm flex items-center ml-2 text-gray-600">
+            已选择 <span id="selected-count" class="font-bold text-indigo-600 mx-1">0</span> 项
+          </div>
+        </div>
+        <div class="flex">
+          <div class="toolbar-btn danger mr-2">
+            <i class="fas fa-trash-alt"></i>
+            删除
+          </div>
+          <div class="toolbar-btn primary">
+            <i class="fas fa-tag"></i>
+            分类
+          </div>
+        </div>
+      </div>
+      
+      <!-- 分类筛选 -->
+      <div class="mb-4 overflow-x-auto">
+        <div class="flex px-2" style="min-width: max-content;">
+          <div class="category-chip active bg-gray-200 text-gray-700">全部</div>
+          <div class="category-chip bg-green-100 text-green-700">学校</div>
+          <div class="category-chip bg-blue-100 text-blue-700">食物</div>
+          <div class="category-chip bg-purple-100 text-purple-700">动物</div>
+          <div class="category-chip bg-yellow-100 text-yellow-700">交通</div>
+          <div class="category-chip bg-pink-100 text-pink-700">娱乐</div>
+          <div class="category-chip bg-indigo-100 text-indigo-700">未分类</div>
+        </div>
+      </div>
+      
+      <!-- 单词列表 -->
+      <div id="words-container">
+        <!-- 空状态显示 -->
+        <div id="empty-state" class="empty-state hidden">
+          <img src="../assets/images/empty-favorites.svg" alt="没有收藏的单词" class="empty-image">
+          <h3 class="text-lg font-bold text-gray-700 mb-2">还没有收藏单词</h3>
+          <p class="text-gray-500 mb-4">你可以在学习过程中收藏喜欢的单词，方便随时复习</p>
+          <button id="add-more-words" class="wx-button wx-button-primary scale-on-press">
+            <i class="fas fa-plus mr-2"></i>添加单词
+          </button>
+        </div>
+        
+        <!-- 单词卡片 1 -->
+        <div class="word-card mb-3 p-4">
+          <div class="flex justify-between">
+            <div>
+              <h3 class="font-bold text-lg text-gray-800">Apple</h3>
+              <p class="text-gray-500 text-sm mb-1">/ˈæp.əl/</p>
+              <div class="text-gray-600 mb-2">苹果，一种红色或绿色的水果</div>
+              
+              <div class="flex">
+                <span class="category-chip bg-green-100 text-green-700">食物</span>
+              </div>
+            </div>
+            
+            <div class="word-actions">
+              <div class="word-action-btn">
+                <i class="fas fa-volume-up text-indigo-500"></i>
+              </div>
+              <div class="word-action-btn favorite-btn active">
+                <i class="fas fa-bookmark"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-2">
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+              <span>掌握度</span>
+              <span>80%</span>
+            </div>
+            <div class="word-progress">
+              <div class="word-progress-bar" style="width: 80%;"></div>
+            </div>
+          </div>
+          
+          <!-- 多选模式下的复选框 -->
+          <div class="hidden selection-checkbox absolute top-0 left-0 p-2">
+            <div class="w-5 h-5 border-2 border-indigo-500 rounded-full bg-white flex items-center justify-center">
+              <i class="fas fa-check text-indigo-500 text-xs hidden"></i>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 单词卡片 2 -->
+        <div class="word-card mb-3 p-4">
+          <div class="flex justify-between">
+            <div>
+              <h3 class="font-bold text-lg text-gray-800">Banana</h3>
+              <p class="text-gray-500 text-sm mb-1">/bəˈnɑː.nə/</p>
+              <div class="text-gray-600 mb-2">香蕉，一种黄色的水果</div>
+              
+              <div class="flex">
+                <span class="category-chip bg-green-100 text-green-700">食物</span>
+              </div>
+            </div>
+            
+            <div class="word-actions">
+              <div class="word-action-btn">
+                <i class="fas fa-volume-up text-indigo-500"></i>
+              </div>
+              <div class="word-action-btn favorite-btn active">
+                <i class="fas fa-bookmark"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-2">
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+              <span>掌握度</span>
+              <span>95%</span>
+            </div>
+            <div class="word-progress">
+              <div class="word-progress-bar" style="width: 95%;"></div>
+            </div>
+          </div>
+          
+          <!-- 多选模式下的复选框 -->
+          <div class="hidden selection-checkbox absolute top-0 left-0 p-2">
+            <div class="w-5 h-5 border-2 border-indigo-500 rounded-full bg-white flex items-center justify-center">
+              <i class="fas fa-check text-indigo-500 text-xs hidden"></i>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 单词卡片 3 -->
+        <div class="word-card mb-3 p-4">
+          <div class="flex justify-between">
+            <div>
+              <h3 class="font-bold text-lg text-gray-800">Cat</h3>
+              <p class="text-gray-500 text-sm mb-1">/kæt/</p>
+              <div class="text-gray-600 mb-2">猫，一种常见的宠物</div>
+              
+              <div class="flex">
+                <span class="category-chip bg-purple-100 text-purple-700">动物</span>
+              </div>
+            </div>
+            
+            <div class="word-actions">
+              <div class="word-action-btn">
+                <i class="fas fa-volume-up text-indigo-500"></i>
+              </div>
+              <div class="word-action-btn favorite-btn active">
+                <i class="fas fa-bookmark"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-2">
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+              <span>掌握度</span>
+              <span>100%</span>
+            </div>
+            <div class="word-progress">
+              <div class="word-progress-bar" style="width: 100%;"></div>
+            </div>
+          </div>
+          
+          <!-- 多选模式下的复选框 -->
+          <div class="hidden selection-checkbox absolute top-0 left-0 p-2">
+            <div class="w-5 h-5 border-2 border-indigo-500 rounded-full bg-white flex items-center justify-center">
+              <i class="fas fa-check text-indigo-500 text-xs hidden"></i>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 单词卡片 4 -->
+        <div class="word-card mb-3 p-4">
+          <div class="flex justify-between">
+            <div>
+              <h3 class="font-bold text-lg text-gray-800">School</h3>
+              <p class="text-gray-500 text-sm mb-1">/skuːl/</p>
+              <div class="text-gray-600 mb-2">学校，学生学习的地方</div>
+              
+              <div class="flex">
+                <span class="category-chip bg-blue-100 text-blue-700">学校</span>
+              </div>
+            </div>
+            
+            <div class="word-actions">
+              <div class="word-action-btn">
+                <i class="fas fa-volume-up text-indigo-500"></i>
+              </div>
+              <div class="word-action-btn favorite-btn active">
+                <i class="fas fa-bookmark"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-2">
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+              <span>掌握度</span>
+              <span>70%</span>
+            </div>
+            <div class="word-progress">
+              <div class="word-progress-bar" style="width: 70%;"></div>
+            </div>
+          </div>
+          
+          <!-- 多选模式下的复选框 -->
+          <div class="hidden selection-checkbox absolute top-0 left-0 p-2">
+            <div class="w-5 h-5 border-2 border-indigo-500 rounded-full bg-white flex items-center justify-center">
+              <i class="fas fa-check text-indigo-500 text-xs hidden"></i>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 单词卡片 5 -->
+        <div class="word-card mb-3 p-4">
+          <div class="flex justify-between">
+            <div>
+              <h3 class="font-bold text-lg text-gray-800">Giraffe</h3>
+              <p class="text-gray-500 text-sm mb-1">/dʒəˈrɑːf/</p>
+              <div class="text-gray-600 mb-2">长颈鹿，一种有长脖子的动物</div>
+              
+              <div class="flex">
+                <span class="category-chip bg-purple-100 text-purple-700">动物</span>
+              </div>
+            </div>
+            
+            <div class="word-actions">
+              <div class="word-action-btn">
+                <i class="fas fa-volume-up text-indigo-500"></i>
+              </div>
+              <div class="word-action-btn favorite-btn active">
+                <i class="fas fa-bookmark"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-2">
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+              <span>掌握度</span>
+              <span>50%</span>
+            </div>
+            <div class="word-progress">
+              <div class="word-progress-bar" style="width: 50%;"></div>
+            </div>
+          </div>
+          
+          <!-- 多选模式下的复选框 -->
+          <div class="hidden selection-checkbox absolute top-0 left-0 p-2">
+            <div class="w-5 h-5 border-2 border-indigo-500 rounded-full bg-white flex items-center justify-center">
+              <i class="fas fa-check text-indigo-500 text-xs hidden"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 分类弹窗 -->
+      <div id="category-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-close">
+            <i class="fas fa-times text-gray-500"></i>
+          </div>
+          
+          <h3 class="text-xl font-bold mb-6">选择分类</h3>
+          
+          <div class="mb-6">
+            <!-- 分类选项 -->
+            <div class="checkbox-wrapper">
+              <div class="custom-checkbox">
+                <i class="fas fa-check checkmark"></i>
+              </div>
+              <div class="flex items-center">
+                <div class="category-dot bg-blue-500"></div>
+                <span>学校</span>
+              </div>
+            </div>
+            
+            <div class="checkbox-wrapper">
+              <div class="custom-checkbox">
+                <i class="fas fa-check checkmark"></i>
+              </div>
+              <div class="flex items-center">
+                <div class="category-dot bg-green-500"></div>
+                <span>食物</span>
+              </div>
+            </div>
+            
+            <div class="checkbox-wrapper checked">
+              <div class="custom-checkbox">
+                <i class="fas fa-check checkmark"></i>
+              </div>
+              <div class="flex items-center">
+                <div class="category-dot bg-purple-500"></div>
+                <span>动物</span>
+              </div>
+            </div>
+            
+            <div class="checkbox-wrapper">
+              <div class="custom-checkbox">
+                <i class="fas fa-check checkmark"></i>
+              </div>
+              <div class="flex items-center">
+                <div class="category-dot bg-yellow-500"></div>
+                <span>交通</span>
+              </div>
+            </div>
+            
+            <div class="checkbox-wrapper">
+              <div class="custom-checkbox">
+                <i class="fas fa-check checkmark"></i>
+              </div>
+              <div class="flex items-center">
+                <div class="category-dot bg-pink-500"></div>
+                <span>娱乐</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex">
+            <button id="add-category-btn" class="text-indigo-600 flex items-center text-sm mb-6">
+              <i class="fas fa-plus-circle mr-2"></i>
+              <span>新建分类</span>
+            </button>
+          </div>
+          
+          <div class="flex gap-3">
+            <button class="wx-button wx-button-outline flex-1 scale-on-press">
+              取消
+            </button>
+            <button class="wx-button wx-button-primary flex-1 scale-on-press">
+              确定
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 新建分类弹窗 -->
+      <div id="new-category-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-close">
+            <i class="fas fa-times text-gray-500"></i>
+          </div>
+          
+          <h3 class="text-xl font-bold mb-6">新建分类</h3>
+          
+          <div class="mb-4">
+            <label class="text-sm text-gray-600 block mb-2">分类名称</label>
+            <input type="text" class="border border-gray-300 rounded-lg p-3 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="输入分类名称">
+          </div>
+          
+          <div class="mb-6">
+            <label class="text-sm text-gray-600 block mb-2">选择颜色</label>
+            <div class="flex gap-3 flex-wrap">
+              <div class="w-8 h-8 rounded-full bg-red-500 cursor-pointer"></div>
+              <div class="w-8 h-8 rounded-full bg-orange-500 cursor-pointer"></div>
+              <div class="w-8 h-8 rounded-full bg-yellow-500 cursor-pointer"></div>
+              <div class="w-8 h-8 rounded-full bg-green-500 cursor-pointer"></div>
+              <div class="w-8 h-8 rounded-full bg-teal-500 cursor-pointer"></div>
+              <div class="w-8 h-8 rounded-full bg-blue-500 cursor-pointer"></div>
+              <div class="w-8 h-8 rounded-full bg-indigo-500 cursor-pointer border-2 border-gray-800"></div>
+              <div class="w-8 h-8 rounded-full bg-purple-500 cursor-pointer"></div>
+              <div class="w-8 h-8 rounded-full bg-pink-500 cursor-pointer"></div>
+            </div>
+          </div>
+          
+          <div class="flex gap-3">
+            <button class="wx-button wx-button-outline flex-1 scale-on-press">
+              取消
+            </button>
+            <button class="wx-button wx-button-primary flex-1 scale-on-press">
+              创建
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="fixed bottom-0 left-0 w-full nav-footer">
+      <div class="flex justify-around">
+        <a href="index.html">
+          <i class="fas fa-home"></i>
+          <span>首页</span>
+        </a>
+        <a href="learning.html">
+          <i class="fas fa-book"></i>
+          <span>学习</span>
+        </a>
+        <a href="games.html">
+          <i class="fas fa-gamepad"></i>
+          <span>游戏</span>
+        </a>
+        <a href="profile.html" class="active">
+          <i class="fas fa-user"></i>
+          <span>我的</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // 更新状态栏时间
+    function updateStatusTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      document.querySelector('.status-time').textContent = `${hours}:${minutes}`;
+    }
+    
+    // 初始更新时间并设置定时器每分钟更新一次
+    updateStatusTime();
+    setInterval(updateStatusTime, 60000);
+    
+    // 切换选择模式
+    let isSelectionMode = false;
+    const selectModeBtn = document.getElementById('select-mode-btn');
+    const actionToolbar = document.getElementById('action-toolbar');
+    const selectionCheckboxes = document.querySelectorAll('.selection-checkbox');
+    
+    selectModeBtn.addEventListener('click', function() {
+      isSelectionMode = !isSelectionMode;
+      
+      if (isSelectionMode) {
+        // 进入选择模式
+        selectModeBtn.innerHTML = '<i class="fas fa-times text-gray-600"></i>';
+        actionToolbar.classList.remove('hidden');
+        
+        // 显示复选框
+        selectionCheckboxes.forEach(checkbox => {
+          checkbox.classList.remove('hidden');
+        });
+        
+        // 添加卡片点击事件
+        const wordCards = document.querySelectorAll('.word-card');
+        wordCards.forEach(card => {
+          card.addEventListener('click', toggleCardSelection);
+        });
+      } else {
+        // 退出选择模式
+        selectModeBtn.innerHTML = '<i class="fas fa-check-square text-gray-600"></i>';
+        actionToolbar.classList.add('hidden');
+        
+        // 隐藏复选框
+        selectionCheckboxes.forEach(checkbox => {
+          checkbox.classList.add('hidden');
+        });
+        
+        // 移除选中状态
+        const wordCards = document.querySelectorAll('.word-card');
+        wordCards.forEach(card => {
+          card.classList.remove('selected');
+          card.removeEventListener('click', toggleCardSelection);
+        });
+        
+        // 重置选中计数
+        document.getElementById('selected-count').textContent = '0';
+      }
+    });
+    
+    // 切换卡片选中状态
+    function toggleCardSelection() {
+      this.classList.toggle('selected');
+      const checkbox = this.querySelector('.selection-checkbox .fa-check');
+      if (this.classList.contains('selected')) {
+        checkbox.classList.remove('hidden');
+      } else {
+        checkbox.classList.add('hidden');
+      }
+      
+      // 更新选中计数
+      const selectedCards = document.querySelectorAll('.word-card.selected');
+      document.getElementById('selected-count').textContent = selectedCards.length;
+    }
+    
+    // 分类筛选
+    const categoryChips = document.querySelectorAll('.category-chip');
+    categoryChips.forEach(chip => {
+      chip.addEventListener('click', function() {
+        // 移除其他类别的active状态
+        categoryChips.forEach(c => c.classList.remove('active'));
+        
+        // 添加当前类别的active状态
+        this.classList.add('active');
+        
+        // 筛选单词卡片（实际应用中应该根据类别过滤单词卡片）
+        const category = this.textContent;
+        console.log(`筛选类别: ${category}`);
+        
+        if (category === '全部') {
+          document.querySelectorAll('.word-card').forEach(card => {
+            card.style.display = 'block';
+          });
+        } else {
+          document.querySelectorAll('.word-card').forEach(card => {
+            const cardCategory = card.querySelector('.category-chip').textContent;
+            card.style.display = cardCategory === category ? 'block' : 'none';
+          });
+        }
+      });
+    });
+    
+    // 发音按钮
+    const volumeBtns = document.querySelectorAll('.word-action-btn .fa-volume-up');
+    volumeBtns.forEach(btn => {
+      btn.parentElement.addEventListener('click', function(e) {
+        e.stopPropagation(); // 防止触发卡片选择
+        const word = this.closest('.word-card').querySelector('h3').textContent;
+        console.log(`播放单词: ${word}`);
+        
+        // 模拟发音效果
+        this.classList.add('animate-pulse');
+        setTimeout(() => {
+          this.classList.remove('animate-pulse');
+        }, 1000);
+      });
+    });
+    
+    // 收藏按钮
+    const favoriteBtns = document.querySelectorAll('.favorite-btn');
+    favoriteBtns.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation(); // 防止触发卡片选择
+        this.classList.toggle('active');
+        
+        // 在实际应用中，这里应该有更新收藏状态的逻辑
+        const word = this.closest('.word-card').querySelector('h3').textContent;
+        console.log(`${this.classList.contains('active') ? '收藏' : '取消收藏'}单词: ${word}`);
+      });
+    });
+    
+    // 显示分类弹窗
+    document.querySelector('.toolbar-btn.primary').addEventListener('click', function() {
+      document.getElementById('category-modal').style.display = 'flex';
+    });
+    
+    // 关闭分类弹窗
+    document.querySelectorAll('#category-modal .modal-close, #category-modal .wx-button-outline').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.getElementById('category-modal').style.display = 'none';
+      });
+    });
+    
+    // 显示新建分类弹窗
+    document.getElementById('add-category-btn').addEventListener('click', function() {
+      document.getElementById('category-modal').style.display = 'none';
+      document.getElementById('new-category-modal').style.display = 'flex';
+    });
+    
+    // 关闭新建分类弹窗
+    document.querySelectorAll('#new-category-modal .modal-close, #new-category-modal .wx-button-outline').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.getElementById('new-category-modal').style.display = 'none';
+        document.getElementById('category-modal').style.display = 'flex';
+      });
+    });
+    
+    // 切换分类选择
+    document.querySelectorAll('.checkbox-wrapper').forEach(wrapper => {
+      wrapper.addEventListener('click', function() {
+        this.classList.toggle('checked');
+      });
+    });
+    
+    // 颜色选择
+    document.querySelectorAll('#new-category-modal .rounded-full').forEach(color => {
+      color.addEventListener('click', function() {
+        // 移除其他颜色的边框
+        document.querySelectorAll('#new-category-modal .rounded-full').forEach(c => {
+          c.classList.remove('border-2', 'border-gray-800');
+        });
+        
+        // 添加当前颜色的边框
+        this.classList.add('border-2', 'border-gray-800');
+      });
+    });
+    
+    // 全选按钮
+    document.querySelector('.toolbar-btn.secondary').addEventListener('click', function() {
+      const wordCards = document.querySelectorAll('.word-card');
+      const allSelected = document.querySelectorAll('.word-card.selected').length === wordCards.length;
+      
+      wordCards.forEach(card => {
+        if (allSelected) {
+          // 如果全部已选，则取消选择
+          card.classList.remove('selected');
+          card.querySelector('.selection-checkbox .fa-check').classList.add('hidden');
+        } else {
+          // 否则全选
+          card.classList.add('selected');
+          card.querySelector('.selection-checkbox .fa-check').classList.remove('hidden');
+        }
+      });
+      
+      // 更新选中计数
+      const selectedCount = allSelected ? 0 : wordCards.length;
+      document.getElementById('selected-count').textContent = selectedCount;
+    });
+    
+    // 删除按钮
+    document.querySelector('.toolbar-btn.danger').addEventListener('click', function() {
+      const selectedCards = document.querySelectorAll('.word-card.selected');
+      
+      if (selectedCards.length > 0) {
+        if (confirm(`确定要删除选中的 ${selectedCards.length} 个单词吗？`)) {
+          selectedCards.forEach(card => {
+            card.remove();
+          });
+          
+          // 重置选中计数
+          document.getElementById('selected-count').textContent = '0';
+        }
+      }
+    });
+    
+    // 模拟添加用户收藏的其他单词功能
+    document.getElementById('add-more-words').addEventListener('click', function() {
+      // 这里应该是打开添加词汇的弹窗或跳转到相关页面
+      alert('此功能将允许用户从词库中添加更多单词到收藏列表');
+    });
+    
+    // 当没有收藏单词时显示空状态
+    function checkEmptyState() {
+      const wordCards = document.querySelectorAll('.word-card');
+      const emptyState = document.getElementById('empty-state');
+      
+      if (wordCards.length === 0 && emptyState) {
+        emptyState.classList.remove('hidden');
+      } else if (emptyState) {
+        emptyState.classList.add('hidden');
+      }
+    }
+    
+    // 初始化检查空状态
+    checkEmptyState();
+  </script>
+</body>
+</html> 

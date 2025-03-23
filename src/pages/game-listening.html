@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>听力选择 - WordSprout</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <style>
+    .option-card {
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .option-card:active {
+      transform: scale(0.98);
+    }
+    
+    .option-card.correct {
+      border-color: var(--success-color);
+      background-color: rgba(44, 206, 137, 0.1);
+    }
+    
+    .option-card.incorrect {
+      border-color: var(--error-color);
+      background-color: rgba(255, 75, 75, 0.1);
+    }
+    
+    .volume-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7363E8, #A091FF);
+      box-shadow: 0 4px 15px rgba(115, 99, 232, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .volume-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 10px rgba(115, 99, 232, 0.2);
+    }
+    
+    .progress-container {
+      height: 10px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #7363E8, #A091FF);
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+    
+    /* 结果弹窗 */
+    .result-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      display: none;
+    }
+    
+    .result-card {
+      width: 85%;
+      max-width: 350px;
+      background: white;
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="wx-container bg-light">
+    <!-- iPhone状态栏 -->
+    <div class="iphone-status-bar">
+      <div class="status-carrier">中国移动</div>
+      <div class="status-time">17:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <div class="battery-icon">
+          <div class="battery-level"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="wx-page wx-fade-in">
+      <!-- 顶部标题栏 -->
+      <div class="wx-header rounded-b-2xl mb-4 relative">
+        <!-- 渐变背景装饰 -->
+        <div class="gradient-bg"></div>
+        
+        <div class="flex-none">
+          <a href="games.html" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 hover:bg-gray-100 transition duration-200">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+          </a>
+        </div>
+        
+        <div class="title text-center flex-grow">
+          <h1 class="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent whitespace-nowrap mx-auto flex items-center justify-center">
+            <i class="fas fa-volume-up text-purple-500 mr-1"></i>
+            听力选择
+          </h1>
+        </div>
+        
+        <div class="flex-none w-8"></div>
+      </div>
+
+      <!-- 游戏进度 -->
+      <div class="flex justify-between items-center mb-3">
+        <div class="text-sm font-medium text-gray-600">
+          题目: <span id="current-question">1</span>/<span id="total-questions">10</span>
+        </div>
+        <div class="text-sm font-medium text-gray-600">
+          得分: <span id="score">0</span>
+        </div>
+      </div>
+      <div class="progress-container mb-6">
+        <div id="progress-bar" class="progress-bar" style="width: 10%;"></div>
+      </div>
+      
+      <!-- 听力发音区域 -->
+      <div class="flex justify-center mb-6">
+        <button id="play-btn" class="volume-btn flex items-center justify-center">
+          <i class="fas fa-volume-up text-white text-2xl"></i>
+        </button>
+      </div>
+      
+      <!-- 问题提示 -->
+      <div class="text-center mb-6">
+        <h3 class="text-gray-600 font-medium">听一听，选择你听到的单词</h3>
+        <p class="text-sm text-gray-500 mt-1">点击上方按钮播放发音</p>
+      </div>
+      
+      <!-- 选项列表 -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="option-card wx-card p-4 flex items-center justify-center" data-option="0">
+          <span class="text-lg font-medium">选项 1</span>
+        </div>
+        <div class="option-card wx-card p-4 flex items-center justify-center" data-option="1">
+          <span class="text-lg font-medium">选项 2</span>
+        </div>
+        <div class="option-card wx-card p-4 flex items-center justify-center" data-option="2">
+          <span class="text-lg font-medium">选项 3</span>
+        </div>
+        <div class="option-card wx-card p-4 flex items-center justify-center" data-option="3">
+          <span class="text-lg font-medium">选项 4</span>
+        </div>
+      </div>
+      
+      <!-- 提示区域 -->
+      <div id="hint-area" class="wx-card bg-blue-50 border border-blue-100 mb-4 hidden">
+        <div class="flex items-start">
+          <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+          <div>
+            <h3 class="font-medium mb-1">提示</h3>
+            <p id="hint-text" class="text-sm text-gray-600">
+              <!-- 提示内容将通过JavaScript动态生成 -->
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 操作按钮 -->
+      <div class="flex justify-between">
+        <button id="hint-btn" class="wx-button wx-button-outline scale-on-press">
+          <i class="far fa-lightbulb mr-1"></i> 提示
+        </button>
+        
+        <button id="next-btn" class="wx-button wx-button-primary scale-on-press opacity-50 pointer-events-none">
+          下一题 <i class="fas fa-arrow-right ml-1"></i>
+        </button>
+      </div>
+      
+      <!-- 结果弹窗 -->
+      <div id="result-popup" class="result-overlay">
+        <div class="result-card">
+          <div id="result-icon" class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <!-- 图标将根据得分动态生成 -->
+          </div>
+          <h2 class="text-xl font-bold mb-2">听力挑战完成!</h2>
+          <p class="text-gray-600 mb-4">你的得分：<span id="final-score" class="font-bold">0</span> / 100</p>
+          
+          <div class="flex justify-between mb-6">
+            <div class="text-center flex-1">
+              <div class="text-sm text-gray-500">正确</div>
+              <div id="correct-count" class="font-bold text-lg text-green-500">0</div>
+            </div>
+            <div class="text-center flex-1">
+              <div class="text-sm text-gray-500">错误</div>
+              <div id="incorrect-count" class="font-bold text-lg text-red-500">0</div>
+            </div>
+            <div class="text-center flex-1">
+              <div class="text-sm text-gray-500">准确率</div>
+              <div id="accuracy" class="font-bold text-lg">0%</div>
+            </div>
+          </div>
+          
+          <button id="try-again-btn" class="wx-button wx-button-primary w-full mb-3 scale-on-press">
+            再玩一次
+          </button>
+          <a href="games.html" class="wx-button wx-button-outline w-full block scale-on-press">
+            返回游戏中心
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="fixed bottom-0 left-0 w-full nav-footer">
+      <div class="flex justify-around">
+        <a href="index.html">
+          <i class="fas fa-home"></i>
+          <span>首页</span>
+        </a>
+        <a href="learning.html">
+          <i class="fas fa-book"></i>
+          <span>学习</span>
+        </a>
+        <a href="games.html" class="active">
+          <i class="fas fa-gamepad"></i>
+          <span>游戏</span>
+        </a>
+        <a href="profile.html">
+          <i class="fas fa-user"></i>
+          <span>我的</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // 更新状态栏时间
+    function updateStatusTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      document.querySelector('.status-time').textContent = `${hours}:${minutes}`;
+    }
+    
+    // 初始更新时间并设置定时器每分钟更新一次
+    updateStatusTime();
+    setInterval(updateStatusTime, 60000);
+    
+    // 游戏数据
+    const questions = [
+      {
+        word: "Apple",
+        translation: "苹果",
+        options: ["Apple", "Banana", "Orange", "Grape"],
+        correctIndex: 0,
+        hint: "这是一种常见的红色或绿色水果，经常用来形容老师的礼物。"
+      },
+      {
+        word: "Book",
+        translation: "书",
+        options: ["Pen", "Book", "Notebook", "Pencil"],
+        correctIndex: 1,
+        hint: "这是一种由纸张和文字组成的物品，用于阅读和学习。"
+      },
+      {
+        word: "Cat",
+        translation: "猫",
+        options: ["Dog", "Bird", "Cat", "Fish"],
+        correctIndex: 2,
+        hint: "这是一种常见的宠物，喜欢捉老鼠，会发出"喵喵"的叫声。"
+      },
+      {
+        word: "Dog",
+        translation: "狗",
+        options: ["Cat", "Dog", "Rabbit", "Hamster"],
+        correctIndex: 1,
+        hint: "这是人类最忠实的朋友，会发出"汪汪"的叫声。"
+      },
+      {
+        word: "Elephant",
+        translation: "大象",
+        options: ["Lion", "Tiger", "Giraffe", "Elephant"],
+        correctIndex: 3,
+        hint: "这是地球上最大的陆地动物，有长长的鼻子和大耳朵。"
+      },
+      {
+        word: "Flower",
+        translation: "花",
+        options: ["Flower", "Tree", "Grass", "Bush"],
+        correctIndex: 0,
+        hint: "这是植物的一部分，通常有美丽的颜色和香气，用于装饰或表达情感。"
+      },
+      {
+        word: "Giraffe",
+        translation: "长颈鹿",
+        options: ["Zebra", "Elephant", "Giraffe", "Hippo"],
+        correctIndex: 2,
+        hint: "这种动物有非常长的脖子，可以吃到高树上的叶子。"
+      },
+      {
+        word: "House",
+        translation: "房子",
+        options: ["Car", "House", "Building", "Shop"],
+        correctIndex: 1,
+        hint: "这是人们生活的地方，有墙壁、门窗和屋顶。"
+      },
+      {
+        word: "Ice Cream",
+        translation: "冰淇淋",
+        options: ["Cake", "Candy", "Ice Cream", "Chocolate"],
+        correctIndex: 2,
+        hint: "这是一种冰冷的甜食，夏天特别受欢迎，有各种口味。"
+      },
+      {
+        word: "Jungle",
+        translation: "丛林",
+        options: ["Jungle", "Desert", "Ocean", "Mountain"],
+        correctIndex: 0,
+        hint: "这是一种密集的森林环境，通常位于热带地区，有很多野生动物。"
+      }
+    ];
+    
+    // 游戏状态
+    let gameState = {
+      currentQuestion: 0,
+      score: 0,
+      correctCount: 0,
+      incorrectCount: 0,
+      answered: false,
+      hintsUsed: 0,
+      shuffledQuestions: []
+    };
+    
+    // 初始化游戏
+    function initGame() {
+      // 重置游戏状态
+      gameState = {
+        currentQuestion: 0,
+        score: 0,
+        correctCount: 0,
+        incorrectCount: 0,
+        answered: false,
+        hintsUsed: 0,
+        shuffledQuestions: shuffleArray([...questions])
+      };
+      
+      // 更新UI
+      document.getElementById('current-question').textContent = '1';
+      document.getElementById('total-questions').textContent = questions.length;
+      document.getElementById('score').textContent = '0';
+      document.getElementById('progress-bar').style.width = '10%';
+      
+      // 隐藏提示区域
+      document.getElementById('hint-area').classList.add('hidden');
+      
+      // 加载第一个问题
+      loadQuestion();
+    }
+    
+    // 加载问题
+    function loadQuestion() {
+      // 如果已经回答完所有问题，则显示结果
+      if (gameState.currentQuestion >= gameState.shuffledQuestions.length) {
+        showResults();
+        return;
+      }
+      
+      // 获取当前问题
+      const question = gameState.shuffledQuestions[gameState.currentQuestion];
+      
+      // 更新进度
+      document.getElementById('current-question').textContent = gameState.currentQuestion + 1;
+      document.getElementById('progress-bar').style.width = `${(gameState.currentQuestion + 1) / gameState.shuffledQuestions.length * 100}%`;
+      
+      // 随机排序选项
+      const shuffledOptions = shuffleArray([...question.options]);
+      
+      // 更新选项
+      const optionCards = document.querySelectorAll('.option-card');
+      optionCards.forEach((card, index) => {
+        // 重置选项卡样式
+        card.classList.remove('correct', 'incorrect');
+        card.querySelector('span').textContent = shuffledOptions[index];
+        
+        // 存储正确答案的索引
+        if (shuffledOptions[index] === question.options[question.correctIndex]) {
+          card.dataset.correct = 'true';
+        } else {
+          card.dataset.correct = 'false';
+        }
+      });
+      
+      // 重置答题状态
+      gameState.answered = false;
+      
+      // 禁用下一题按钮
+      const nextBtn = document.getElementById('next-btn');
+      nextBtn.classList.add('opacity-50', 'pointer-events-none');
+      
+      // 隐藏提示区域
+      document.getElementById('hint-area').classList.add('hidden');
+      
+      // 添加选项点击事件
+      optionCards.forEach(card => {
+        card.onclick = function() {
+          if (gameState.answered) return; // 如果已经回答，则不处理点击
+          
+          gameState.answered = true;
+          
+          // 判断是否正确
+          if (this.dataset.correct === 'true') {
+            this.classList.add('correct');
+            gameState.score += 10;
+            gameState.correctCount++;
+            document.getElementById('score').textContent = gameState.score;
+          } else {
+            this.classList.add('incorrect');
+            gameState.incorrectCount++;
+            
+            // 显示正确答案
+            optionCards.forEach(c => {
+              if (c.dataset.correct === 'true') {
+                c.classList.add('correct');
+              }
+            });
+          }
+          
+          // 启用下一题按钮
+          nextBtn.classList.remove('opacity-50', 'pointer-events-none');
+        };
+      });
+      
+      // 更新提示文本
+      document.getElementById('hint-text').textContent = question.hint;
+    }
+    
+    // 显示结果
+    function showResults() {
+      // 计算准确率
+      const accuracy = Math.round((gameState.correctCount / gameState.shuffledQuestions.length) * 100);
+      
+      // 更新结果弹窗
+      document.getElementById('final-score').textContent = gameState.score;
+      document.getElementById('correct-count').textContent = gameState.correctCount;
+      document.getElementById('incorrect-count').textContent = gameState.incorrectCount;
+      document.getElementById('accuracy').textContent = `${accuracy}%`;
+      
+      // 根据得分设置不同的图标和颜色
+      const resultIcon = document.getElementById('result-icon');
+      if (accuracy >= 80) {
+        resultIcon.className = 'w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4';
+        resultIcon.innerHTML = '<i class="fas fa-trophy text-yellow-500 text-4xl"></i>';
+      } else if (accuracy >= 60) {
+        resultIcon.className = 'w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4';
+        resultIcon.innerHTML = '<i class="fas fa-medal text-blue-500 text-4xl"></i>';
+      } else {
+        resultIcon.className = 'w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4';
+        resultIcon.innerHTML = '<i class="fas fa-star text-orange-500 text-4xl"></i>';
+      }
+      
+      // 显示结果弹窗
+      document.getElementById('result-popup').style.display = 'flex';
+    }
+    
+    // 播放发音
+    function playPronunciation() {
+      // 在实际应用中，这里会使用真实的发音API
+      // 在这个原型中，我们只是使用console输出
+      console.log(`播放单词：${gameState.shuffledQuestions[gameState.currentQuestion].word}`);
+      
+      // 添加音效反馈
+      const playBtn = document.getElementById('play-btn');
+      playBtn.innerHTML = '<i class="fas fa-play text-white text-2xl"></i>';
+      
+      setTimeout(() => {
+        playBtn.innerHTML = '<i class="fas fa-volume-up text-white text-2xl"></i>';
+      }, 1000);
+    }
+    
+    // 显示提示
+    function showHint() {
+      document.getElementById('hint-area').classList.remove('hidden');
+      gameState.hintsUsed++;
+    }
+    
+    // 辅助函数：随机打乱数组
+    function shuffleArray(array) {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    }
+    
+    // 绑定按钮事件
+    document.getElementById('play-btn').addEventListener('click', playPronunciation);
+    
+    document.getElementById('hint-btn').addEventListener('click', showHint);
+    
+    document.getElementById('next-btn').addEventListener('click', () => {
+      gameState.currentQuestion++;
+      loadQuestion();
+    });
+    
+    document.getElementById('try-again-btn').addEventListener('click', () => {
+      document.getElementById('result-popup').style.display = 'none';
+      initGame();
+    });
+    
+    // 初始化游戏
+    document.addEventListener('DOMContentLoaded', initGame);
+  </script>
+</body>
+</html> 

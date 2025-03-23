@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>场景对话 - WordSprout</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <style>
+    .dialogue-card {
+      border-radius: 12px;
+      background: white;
+      transition: all 0.3s ease;
+    }
+    
+    .role-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    
+    .message-bubble-left {
+      background: #F0F2F5;
+      border-radius: 18px 18px 18px 0;
+      padding: 10px 15px;
+      max-width: 85%;
+      position: relative;
+    }
+    
+    .message-bubble-right {
+      background: #DCF8C6;
+      border-radius: 18px 18px 0 18px;
+      padding: 10px 15px;
+      max-width: 85%;
+      position: relative;
+    }
+    
+    .scenario-card {
+      border-radius: 15px;
+      border: 1px dashed #E1E7ED;
+      background: #F9FAFC;
+      transition: all 0.3s ease;
+    }
+    
+    .scenario-card:hover {
+      border-color: #7363E8;
+      background: rgba(115, 99, 232, 0.05);
+    }
+    
+    .scenario-card.active {
+      border: 2px solid #7363E8;
+      background: rgba(115, 99, 232, 0.05);
+    }
+    
+    .volume-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7363E8, #A091FF);
+      box-shadow: 0 4px 15px rgba(115, 99, 232, 0.3);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .volume-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 10px rgba(115, 99, 232, 0.2);
+    }
+    
+    .option-card {
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .option-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .option-card.selected {
+      border-color: #7363E8;
+      background: rgba(115, 99, 232, 0.05);
+    }
+    
+    .option-card.correct {
+      border-color: #2CCE89;
+      background: rgba(44, 206, 137, 0.05);
+    }
+    
+    .option-card.incorrect {
+      border-color: #FF4B4B;
+      background: rgba(255, 75, 75, 0.05);
+    }
+    
+    .speaking-indicator {
+      position: relative;
+      font-size: 20px;
+      color: #7363E8;
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.5;
+      }
+      50% {
+        transform: scale(1.05);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0.95);
+        opacity: 0.5;
+      }
+    }
+    
+    .speak-btn {
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    
+    .speak-btn.recording {
+      background: rgba(255, 75, 75, 0.1);
+      border-color: #FF4B4B;
+      animation: pulse 1.5s infinite;
+    }
+    
+    .progress-container {
+      height: 10px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #7363E8, #A091FF);
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="wx-container bg-light">
+    <!-- iPhone状态栏 -->
+    <div class="iphone-status-bar">
+      <div class="status-carrier">中国移动</div>
+      <div class="status-time">17:41</div>
+      <div class="status-icons">
+        <i class="fas fa-signal"></i>
+        <i class="fas fa-wifi"></i>
+        <div class="battery-icon">
+          <div class="battery-level"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="wx-page wx-fade-in">
+      <!-- 顶部标题栏 -->
+      <div class="wx-header rounded-b-2xl mb-4 relative">
+        <!-- 渐变背景装饰 -->
+        <div class="gradient-bg"></div>
+        
+        <div class="flex-none">
+          <a href="speech.html" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 hover:bg-gray-100 transition duration-200">
+            <i class="fas fa-arrow-left text-gray-600"></i>
+          </a>
+        </div>
+        
+        <div class="title text-center flex-grow">
+          <h1 class="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent whitespace-nowrap mx-auto flex items-center justify-center">
+            <i class="fas fa-comments text-purple-500 mr-1"></i>
+            场景对话
+          </h1>
+        </div>
+        
+        <div class="flex-none w-8"></div>
+      </div>
+
+      <!-- 场景选择 -->
+      <h3 class="text-gray-700 font-medium mb-3">选择对话场景</h3>
+      <div class="grid grid-cols-2 gap-3 mb-6">
+        <div class="scenario-card active p-3 flex flex-col items-center text-center cursor-pointer">
+          <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-2">
+            <i class="fas fa-store text-red-500"></i>
+          </div>
+          <h4 class="font-medium mb-1">商店购物</h4>
+          <p class="text-xs text-gray-500">在商店买东西的对话</p>
+        </div>
+        
+        <div class="scenario-card p-3 flex flex-col items-center text-center cursor-pointer">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
+            <i class="fas fa-utensils text-green-500"></i>
+          </div>
+          <h4 class="font-medium mb-1">餐厅点餐</h4>
+          <p class="text-xs text-gray-500">在餐厅点餐的对话</p>
+        </div>
+        
+        <div class="scenario-card p-3 flex flex-col items-center text-center cursor-pointer">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+            <i class="fas fa-school text-blue-500"></i>
+          </div>
+          <h4 class="font-medium mb-1">学校交流</h4>
+          <p class="text-xs text-gray-500">学校里的日常对话</p>
+        </div>
+        
+        <div class="scenario-card p-3 flex flex-col items-center text-center cursor-pointer">
+          <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
+            <i class="fas fa-bus text-yellow-500"></i>
+          </div>
+          <h4 class="font-medium mb-1">交通出行</h4>
+          <p class="text-xs text-gray-500">乘坐交通工具的对话</p>
+        </div>
+      </div>
+      
+      <!-- 对话进度 -->
+      <div class="flex justify-between items-center mb-3">
+        <div class="text-sm font-medium text-gray-600">
+          步骤: <span id="current-step">1</span>/<span id="total-steps">10</span>
+        </div>
+        <div class="text-sm font-medium text-gray-600">
+          分数: <span id="score">0</span>/100
+        </div>
+      </div>
+      <div class="progress-container mb-6">
+        <div id="progress-bar" class="progress-bar" style="width: 10%;"></div>
+      </div>
+      
+      <!-- 对话区域 -->
+      <div class="dialogue-card mb-6">
+        <div class="p-4">
+          <div class="flex mb-4">
+            <div class="role-avatar bg-blue-100 flex items-center justify-center mr-3">
+              <i class="fas fa-user text-blue-500"></i>
+            </div>
+            <div class="message-bubble-left">
+              <p class="text-gray-800">Good morning! How can I help you today?</p>
+              <button class="volume-btn scale-on-press mt-2 w-8 h-8 bg-gray-100">
+                <i class="fas fa-volume-up text-gray-600 text-sm"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="flex justify-end mb-4">
+            <div class="message-bubble-right">
+              <p class="text-gray-800">
+                <span id="user-response" class="text-gray-800">I'd like to buy some apples, please.</span>
+              </p>
+              <div class="flex justify-end mt-2">
+                <button class="speak-btn scale-on-press w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                  <i class="fas fa-microphone text-gray-600 text-sm"></i>
+                </button>
+              </div>
+            </div>
+            <div class="role-avatar bg-green-100 flex items-center justify-center ml-3">
+              <i class="fas fa-user text-green-500"></i>
+            </div>
+          </div>
+          
+          <div class="flex mb-4">
+            <div class="role-avatar bg-blue-100 flex items-center justify-center mr-3">
+              <i class="fas fa-user text-blue-500"></i>
+            </div>
+            <div class="message-bubble-left">
+              <p class="text-gray-800">Sure! How many apples would you like?</p>
+              <button class="volume-btn scale-on-press mt-2 w-8 h-8 bg-gray-100">
+                <i class="fas fa-volume-up text-gray-600 text-sm"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- 用户选择回答 -->
+          <div class="user-options mt-4">
+            <h3 class="text-sm font-medium text-gray-600 mb-3">选择你的回答:</h3>
+            
+            <div class="option-card wx-card p-3 mb-3 cursor-pointer">
+              <p>I want to buy five apples, please.</p>
+            </div>
+            
+            <div class="option-card wx-card p-3 mb-3 cursor-pointer selected">
+              <p>I'd like five apples, thank you.</p>
+            </div>
+            
+            <div class="option-card wx-card p-3 mb-3 cursor-pointer">
+              <p>Give me five apples.</p>
+            </div>
+            
+            <div class="option-card wx-card p-3 cursor-pointer">
+              <p>Five apples, how much?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 操作按钮 -->
+      <div class="flex justify-between mb-6">
+        <button id="hint-btn" class="wx-button wx-button-outline scale-on-press">
+          <i class="far fa-lightbulb mr-1"></i> 提示
+        </button>
+        
+        <button id="submit-btn" class="wx-button wx-button-primary scale-on-press">
+          <i class="fas fa-check mr-1"></i> 确认
+        </button>
+      </div>
+      
+      <!-- 语音练习模式 -->
+      <div class="wx-card bg-blue-50 border border-blue-100 p-4">
+        <h3 class="font-medium mb-2 flex items-center">
+          <i class="fas fa-microphone text-blue-500 mr-2"></i>
+          语音练习模式
+        </h3>
+        <p class="text-sm text-gray-600 mb-3">
+          点击对话气泡旁的麦克风按钮，跟读练习发音和表达
+        </p>
+        <div class="flex justify-center">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" value="" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            <span class="ml-3 text-sm font-medium text-gray-600">启用语音练习</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="fixed bottom-0 left-0 w-full nav-footer">
+      <div class="flex justify-around">
+        <a href="index.html">
+          <i class="fas fa-home"></i>
+          <span>首页</span>
+        </a>
+        <a href="learning.html">
+          <i class="fas fa-book"></i>
+          <span>学习</span>
+        </a>
+        <a href="games.html">
+          <i class="fas fa-gamepad"></i>
+          <span>游戏</span>
+        </a>
+        <a href="profile.html">
+          <i class="fas fa-user"></i>
+          <span>我的</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    // 更新状态栏时间
+    function updateStatusTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      document.querySelector('.status-time').textContent = `${hours}:${minutes}`;
+    }
+    
+    // 初始更新时间并设置定时器每分钟更新一次
+    updateStatusTime();
+    setInterval(updateStatusTime, 60000);
+    
+    // 场景选择
+    const scenarioCards = document.querySelectorAll('.scenario-card');
+    scenarioCards.forEach(card => {
+      card.addEventListener('click', function() {
+        // 移除其他场景的active状态
+        scenarioCards.forEach(c => c.classList.remove('active'));
+        
+        // 添加当前场景的active状态
+        this.classList.add('active');
+        
+        // 这里可以加载相应场景的对话
+        const scenarioName = this.querySelector('h4').textContent;
+        console.log(`选择场景: ${scenarioName}`);
+        
+        // 重置对话状态
+        resetDialogue();
+      });
+    });
+    
+    // 选项选择
+    const optionCards = document.querySelectorAll('.option-card');
+    optionCards.forEach(card => {
+      card.addEventListener('click', function() {
+        // 移除其他选项的selected状态
+        optionCards.forEach(c => c.classList.remove('selected'));
+        
+        // 添加当前选项的selected状态
+        this.classList.add('selected');
+        
+        // 更新用户响应文本
+        document.getElementById('user-response').textContent = this.querySelector('p').textContent;
+      });
+    });
+    
+    // 语音按钮
+    const volumeBtns = document.querySelectorAll('.volume-btn');
+    volumeBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // 获取要播放的文本
+        const text = this.parentElement.querySelector('p').textContent;
+        console.log(`播放语音: ${text}`);
+        
+        // 模拟播放效果
+        this.classList.add('animate-pulse');
+        setTimeout(() => {
+          this.classList.remove('animate-pulse');
+        }, 1000);
+      });
+    });
+    
+    // 语音录制按钮
+    const speakBtns = document.querySelectorAll('.speak-btn');
+    speakBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // 切换录音状态
+        this.classList.toggle('recording');
+        const isRecording = this.classList.contains('recording');
+        
+        if (isRecording) {
+          this.innerHTML = '<i class="fas fa-stop text-red-500 text-sm"></i>';
+          console.log('开始录音...');
+          
+          // 这里可以添加实际的录音逻辑
+          // 模拟3秒后停止录音
+          setTimeout(() => {
+            this.classList.remove('recording');
+            this.innerHTML = '<i class="fas fa-microphone text-gray-600 text-sm"></i>';
+            console.log('停止录音');
+            
+            // 给出反馈
+            showFeedback('很好！发音清晰，语调自然。');
+          }, 3000);
+        } else {
+          this.innerHTML = '<i class="fas fa-microphone text-gray-600 text-sm"></i>';
+          console.log('停止录音');
+        }
+      });
+    });
+    
+    // 确认按钮
+    document.getElementById('submit-btn').addEventListener('click', function() {
+      const selectedOption = document.querySelector('.option-card.selected');
+      
+      if (selectedOption) {
+        // 提交答案
+        const isCorrect = selectedOption === document.querySelectorAll('.option-card')[1]; // 第二个选项是正确的
+        
+        if (isCorrect) {
+          selectedOption.classList.add('correct');
+          
+          // 增加分数
+          const scoreElement = document.getElementById('score');
+          const currentScore = parseInt(scoreElement.textContent);
+          scoreElement.textContent = currentScore + 10;
+          
+          // 显示反馈
+          showFeedback('回答正确！表达很礼貌。');
+        } else {
+          selectedOption.classList.add('incorrect');
+          document.querySelectorAll('.option-card')[1].classList.add('correct');
+          
+          // 显示反馈
+          showFeedback('不太准确，可以更礼貌地表达。');
+        }
+        
+        // 禁用选项和按钮
+        optionCards.forEach(card => {
+          card.style.pointerEvents = 'none';
+        });
+        this.disabled = true;
+        
+        // 3秒后进入下一步
+        setTimeout(() => {
+          goToNextStep();
+        }, 3000);
+      }
+    });
+    
+    // 提示按钮
+    document.getElementById('hint-btn').addEventListener('click', function() {
+      showFeedback('选择一个礼貌的表达方式，注意使用"I\'d like"和"thank you"等礼貌用语。');
+    });
+    
+    // 显示反馈
+    function showFeedback(message) {
+      // 检查是否已存在反馈元素
+      let feedbackElement = document.querySelector('.feedback-message');
+      
+      if (!feedbackElement) {
+        // 创建反馈元素
+        feedbackElement = document.createElement('div');
+        feedbackElement.className = 'feedback-message wx-card bg-yellow-50 border border-yellow-200 p-3 mb-4';
+        feedbackElement.innerHTML = `
+          <div class="flex items-start">
+            <i class="fas fa-comment-dots text-yellow-500 mt-1 mr-2"></i>
+            <p class="text-sm text-gray-700">${message}</p>
+          </div>
+        `;
+        
+        // 插入到用户选项前面
+        const userOptions = document.querySelector('.user-options');
+        userOptions.parentNode.insertBefore(feedbackElement, userOptions);
+      } else {
+        // 更新现有反馈
+        feedbackElement.querySelector('p').textContent = message;
+      }
+    }
+    
+    // 进入下一步
+    function goToNextStep() {
+      // 更新进度
+      const currentStepElement = document.getElementById('current-step');
+      const totalStepsElement = document.getElementById('total-steps');
+      const progressBarElement = document.getElementById('progress-bar');
+      
+      const currentStep = parseInt(currentStepElement.textContent);
+      const totalSteps = parseInt(totalStepsElement.textContent);
+      
+      if (currentStep < totalSteps) {
+        const nextStep = currentStep + 1;
+        currentStepElement.textContent = nextStep;
+        progressBarElement.style.width = `${(nextStep / totalSteps) * 100}%`;
+        
+        // 重置对话状态
+        resetDialogue();
+      } else {
+        // 完成所有步骤
+        alert('恭喜！您已完成当前场景的所有对话练习。');
+      }
+    }
+    
+    // 重置对话状态
+    function resetDialogue() {
+      // 移除反馈信息
+      const feedbackElement = document.querySelector('.feedback-message');
+      if (feedbackElement) {
+        feedbackElement.remove();
+      }
+      
+      // 重置选项样式和状态
+      const optionCards = document.querySelectorAll('.option-card');
+      optionCards.forEach(card => {
+        card.classList.remove('selected', 'correct', 'incorrect');
+        card.style.pointerEvents = 'auto';
+      });
+      
+      // 默认选中第一个选项
+      optionCards[0].classList.add('selected');
+      
+      // 更新用户响应文本
+      document.getElementById('user-response').textContent = optionCards[0].querySelector('p').textContent;
+      
+      // 重置提交按钮
+      const submitBtn = document.getElementById('submit-btn');
+      submitBtn.disabled = false;
+    }
+    
+    // 初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      // 初始化页面
+    });
+  </script>
+</body>
+</html> 
